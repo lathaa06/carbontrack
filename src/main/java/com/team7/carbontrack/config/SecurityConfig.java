@@ -39,14 +39,10 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsService userDetailsService;
-    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                           UserDetailsService userDetailsService,
-                           OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
+                          UserDetailsService userDetailsService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
-        this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
     }
 
     @Bean
@@ -61,7 +57,6 @@ public class SecurityConfig {
                 )
                 // Optional Google OAuth2 login path, side by side with local JWT login.
                 // On success it also mints our own JWT so downstream API behaviour is uniform.
-                .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
