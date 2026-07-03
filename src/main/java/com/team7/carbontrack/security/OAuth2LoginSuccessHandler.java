@@ -16,11 +16,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Contrasts with local JWT login: same downstream token, very different UX.
- * Google supplies a verified identity (sub, email, name); we look up or
- * provision the matching local User and mint the same access/refresh token
- * pair a password-based login would produce, so every other endpoint stays
- * auth-method agnostic.
+ * Handles a successful Google login: looks up or provisions the matching
+ * local User, then mints the same access/refresh JWT pair a password login
+ * would produce -- every other endpoint in the app stays auth-method agnostic.
+ * Only reached at all if Google credentials are configured (see SecurityConfig).
  */
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -37,7 +36,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                         Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException, ServletException {
 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String googleSub = oAuth2User.getAttribute("sub");
