@@ -2,19 +2,19 @@
 
 @layer base {
   :root {
-    --color-bg-primary: #0a0f0d;
-    --color-bg-secondary: #0d1a14;
-    --color-bg-card: #111f17;
-    --color-bg-card-hover: #162a1e;
-    --color-accent: #22c55e;
-    --color-accent-light: #4ade80;
-    --color-accent-muted: #16a34a;
-    --color-accent-dim: rgba(34, 197, 94, 0.12);
-    --color-text-primary: #f0fdf4;
-    --color-text-secondary: #a3b5a8;
-    --color-text-muted: #6b7f72;
-    --color-border: rgba(34, 197, 94, 0.15);
-    --color-border-hover: rgba(34, 197, 94, 0.35);
+    --color-bg-primary: #f4faf6;
+    --color-bg-secondary: #ffffff;
+    --color-bg-card: #ffffff;
+    --color-bg-card-hover: #ecfdf5;
+    --color-accent: #15803d;
+    --color-accent-light: #16a34a;
+    --color-accent-muted: #166534;
+    --color-accent-dim: rgba(21, 128, 61, 0.08);
+    --color-text-primary: #0f291b;
+    --color-text-secondary: #385846;
+    --color-text-muted: #708b7b;
+    --color-border: #d8ebd9;
+    --color-border-hover: #a9d4ab;
   }
 
   html,
@@ -50,22 +50,23 @@
 
 @layer components {
   .glass-card {
-    background: linear-gradient(135deg, rgba(17, 31, 23, 0.8) 0%, rgba(13, 26, 20, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
     border: 1px solid var(--color-border);
     border-radius: 16px;
     backdrop-filter: blur(12px);
     transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   }
 
   .glass-card:hover {
     border-color: var(--color-border-hover);
-    background: linear-gradient(135deg, rgba(22, 42, 30, 0.85) 0%, rgba(17, 31, 23, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 24px rgba(34, 197, 94, 0.08);
+    box-shadow: 0 8px 30px rgba(21, 128, 61, 0.06);
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
     color: white;
     font-weight: 600;
     padding: 0.625rem 1.5rem;
@@ -79,8 +80,8 @@
 
   .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    box-shadow: 0 4px 16px rgba(21, 128, 61, 0.25);
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   }
 
   .btn-primary:active {
@@ -112,7 +113,7 @@
   }
 
   .input-field {
-    background: rgba(13, 26, 20, 0.7);
+    background: #ffffff;
     border: 1px solid var(--color-border);
     border-radius: 10px;
     color: var(--color-text-primary);
@@ -125,7 +126,7 @@
 
   .input-field:focus {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1);
   }
 
   .input-field::placeholder {
@@ -143,17 +144,18 @@
   }
 
   .stat-card {
-    background: linear-gradient(135deg, rgba(17, 31, 23, 0.8) 0%, rgba(13, 26, 20, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
     border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 1.5rem;
     transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   }
 
   .stat-card:hover {
     border-color: var(--color-border-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1);
+    box-shadow: 0 8px 32px rgba(21, 128, 61, 0.06);
   }
 
   .badge {
@@ -225,7 +227,7 @@
   .progress-bar-fill {
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #16a34a 0%, #22c55e 60%, #4ade80 100%);
+    background: linear-gradient(90deg, #15803d 0%, #16a34a 60%, #22c55e 100%);
     transition: width 0.6s ease;
   }
 
@@ -269,7 +271,7 @@
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #86efac 100%);
+    background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

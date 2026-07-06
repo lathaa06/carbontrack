@@ -3,7 +3,7 @@ package com.team7.carbontrack.security;
 import com.team7.carbontrack.entity.AuthProvider;
 import com.team7.carbontrack.entity.User;
 import com.team7.carbontrack.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Handles a successful Google login: looks up or provisions the matching
@@ -26,12 +25,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final ObjectMapper objectMapper;
 
-    public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtService jwtService, ObjectMapper objectMapper) {
+    @Value("${app.oauth2.authorized-redirect-uri:http://localhost:5173/oauth2/redirect}")
+    private String authorizedRedirectUri;
+
+    public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -51,13 +51,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.generateAccessToken(principal, user.getId());
         String refreshToken = jwtService.generateRefreshToken(principal, user.getId());
 
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_OK);
-        objectMapper.writeValue(response.getWriter(), Map.of(
-                "accessToken", accessToken,
-                "refreshToken", refreshToken,
-                "tokenType", "Bearer"
-        ));
+        String targetUrl = authorizedRedirectUri + "?token=" + accessToken + "&refreshToken=" + refreshToken;
+        response.sendRedirect(targetUrl);
     }
 
     private User provisionUser(String googleSub, String email, String name) {

@@ -15,6 +15,7 @@ public record UserProfileResponse(
         Long orgId,
         UnitSystem preferredUnitSystem,
         GoalVisibility goalVisibility,
+        String profilePhoto,
         Instant createdAt
 ) {
     public static UserProfileResponse from(User user) {
@@ -26,6 +27,7 @@ public record UserProfileResponse(
                 user.getOrgId(),
                 user.getPreferredUnitSystem(),
                 user.getGoalVisibility(),
+                user.getProfilePhoto(),
                 user.getCreatedAt()
         );
     }

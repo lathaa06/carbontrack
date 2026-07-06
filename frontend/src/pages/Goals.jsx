@@ -69,7 +69,7 @@ export default function Goals() {
     <div className="space-y-8 fade-in">
       {/* Active Goal Summary Card */}
       <div className="glass-card p-8">
-        <div className="flex items-center gap-3 mb-6 text-white">
+        <div className="flex items-center gap-3 mb-6 text-[var(--color-text-primary)]">
           <FiTarget className="text-2xl text-[var(--color-accent)]" />
           <h3 className="text-xl font-bold font-outfit">Active Carbon Reduction Goal</h3>
         </div>
@@ -101,7 +101,7 @@ export default function Goals() {
               <div className="flex justify-between items-end">
                 <div>
                   <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Current Emissions</h4>
-                  <p className="text-2xl font-bold font-outfit mt-1 text-white">{activeGoal.currentCo2e} kg CO₂e</p>
+                  <p className="text-2xl font-bold font-outfit mt-1 text-[var(--color-text-primary)]">{activeGoal.currentCo2e} kg CO₂e</p>
                 </div>
                 <span className={`badge ${activeGoal.trajectoryStatus === 'ON_TRACK' ? 'badge-green' : 'badge-red'} mb-1`}>
                   {activeGoal.trajectoryStatus}
@@ -132,7 +132,7 @@ export default function Goals() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Set Goal Form */}
         <div className="glass-card p-6 md:col-span-1">
-          <div className="flex items-center gap-2 mb-6 text-white">
+          <div className="flex items-center gap-2 mb-6 text-[var(--color-text-primary)]">
             <FiPlusCircle className="text-lg text-[var(--color-accent)]" />
             <h3 className="text-sm font-bold tracking-wide uppercase">Set New Goal</h3>
           </div>
@@ -199,7 +199,7 @@ export default function Goals() {
                     <tr key={g.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors">
                       <td className="py-3 text-[var(--color-text-secondary)]">{g.startDate}</td>
                       <td className="py-3 text-center text-[var(--color-text-secondary)]">{g.periodDays} Days</td>
-                      <td className="py-3 text-center font-bold text-white">-{g.targetReductionPct}%</td>
+                      <td className="py-3 text-center font-bold text-[var(--color-text-primary)]">-{g.targetReductionPct}%</td>
                       <td className="py-3 text-right text-[var(--color-text-secondary)]">{Number(g.baselineCo2eKg).toFixed(1)} kg</td>
                       <td className="py-3 text-right">
                         <span className={`badge ${

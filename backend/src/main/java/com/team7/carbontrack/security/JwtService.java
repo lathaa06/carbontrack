@@ -35,12 +35,20 @@ public class JwtService {
     }
 
     public String generateAccessToken(UserDetails userDetails, Long userId) {
-        return buildToken(userDetails.getUsername(), Map.of("uid", userId, "type", "access"),
+        String subject = userDetails.getUsername();
+        if (userDetails instanceof UserPrincipal) {
+            subject = ((UserPrincipal) userDetails).getUser().getEmail();
+        }
+        return buildToken(subject, Map.of("uid", userId, "type", "access"),
                 jwtProperties.accessTokenExpirationMs());
     }
 
     public String generateRefreshToken(UserDetails userDetails, Long userId) {
-        return buildToken(userDetails.getUsername(), Map.of("uid", userId, "type", "refresh"),
+        String subject = userDetails.getUsername();
+        if (userDetails instanceof UserPrincipal) {
+            subject = ((UserPrincipal) userDetails).getUser().getEmail();
+        }
+        return buildToken(subject, Map.of("uid", userId, "type", "refresh"),
                 jwtProperties.refreshTokenExpirationMs());
     }
 
@@ -69,8 +77,12 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
-            String username = extractUsername(token);
-            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+            String subject = extractUsername(token);
+            String expected = userDetails.getUsername();
+            if (userDetails instanceof UserPrincipal) {
+                expected = ((UserPrincipal) userDetails).getUser().getEmail();
+            }
+            return subject.equals(expected) && !isTokenExpired(token);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }

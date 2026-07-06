@@ -75,7 +75,7 @@ export default function Organisation() {
       {/* Top Banner */}
       <div className="glass-card p-6 flex items-center justify-between border-l-4 border-[var(--color-accent)]">
         <div>
-          <h2 className="text-2xl font-bold font-outfit text-white">{data.organisationName}</h2>
+          <h2 className="text-2xl font-bold font-outfit text-[var(--color-text-primary)]">{data.organisationName}</h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-1">Corporate Sustainability Dashboard</p>
         </div>
         <div className="p-3 bg-[var(--color-accent-dim)] rounded-xl text-[var(--color-accent)]">
@@ -87,20 +87,20 @@ export default function Organisation() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="stat-card">
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Current Month Emissions</h4>
-          <h2 className="text-3xl font-bold font-outfit mt-2 text-white">
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-[var(--color-text-primary)]">
             {data.currentMonthEmissions} <span className="text-sm font-medium text-[var(--color-text-secondary)]">kg CO₂e</span>
           </h2>
           {previous > 0 ? (
             <p className="text-xs mt-2 flex items-center gap-1">
               {isIncrease ? (
                 <>
-                  <FiTrendingUp className="text-red-400" />
-                  <span className="text-red-400 font-semibold">+{momChange}%</span>
+                  <FiTrendingUp className="text-red-600" />
+                  <span className="text-red-600 font-semibold">+{momChange}%</span>
                 </>
               ) : (
                 <>
-                  <FiTrendingDown className="text-emerald-400" />
-                  <span className="text-emerald-400 font-semibold">{momChange}%</span>
+                  <FiTrendingDown className="text-emerald-600" />
+                  <span className="text-emerald-600 font-semibold">{momChange}%</span>
                 </>
               )}
               <span className="text-[var(--color-text-muted)]">vs last month ({data.previousMonthEmissions} kg)</span>
@@ -112,7 +112,7 @@ export default function Organisation() {
 
         <div className="stat-card">
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Active Employees</h4>
-          <h2 className="text-3xl font-bold font-outfit mt-2 text-white">
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-[var(--color-text-primary)]">
             {data.employees.length} <span className="text-sm font-medium text-[var(--color-text-secondary)]">Members</span>
           </h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">Enrolled under organisation tenant</p>
@@ -159,7 +159,7 @@ export default function Organisation() {
               {data.employees.length > 0 ? (
                 data.employees.map((emp) => (
                   <tr key={emp.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors">
-                    <td className="py-4 px-4 font-semibold text-white">{emp.username}</td>
+                    <td className="py-4 px-4 font-semibold text-[var(--color-text-primary)]">{emp.username}</td>
                     <td className="py-4 px-4 font-bold text-[var(--color-accent-light)]">
                       {emp.totalCo2e} <span className="text-[10px] font-normal text-[var(--color-text-muted)]">kg CO₂e</span>
                     </td>

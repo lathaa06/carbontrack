@@ -36,7 +36,7 @@ export default function Leaderboard() {
       <div className="glass-card p-6">
         <div className="flex items-center gap-2 mb-6">
           <FiAward className="text-2xl text-[var(--color-accent)]" />
-          <h3 className="text-lg font-bold font-outfit text-white">Community Leaderboard</h3>
+          <h3 className="text-lg font-bold font-outfit text-[var(--color-text-primary)]">Community Leaderboard</h3>
         </div>
 
         <div className="overflow-x-auto">
@@ -58,7 +58,7 @@ export default function Leaderboard() {
                     <td className="py-4 px-4 text-center">
                       <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full font-bold text-xs ${
                         index === 0 ? 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' :
-                        index === 1 ? 'bg-slate-300/20 text-slate-300 border border-slate-300/30' :
+                        index === 1 ? 'bg-slate-100 text-slate-700 border border-slate-200' :
                         index === 2 ? 'bg-amber-600/20 text-amber-600 border border-amber-600/30' :
                         'bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] border border-[var(--color-border)]'
                       }`}>
@@ -69,7 +69,7 @@ export default function Leaderboard() {
                     {/* Username & Habits Popup */}
                     <td className="py-4 px-4">
                       <div>
-                        <span className="font-semibold text-white">{entry.username}</span>
+                        <span className="font-semibold text-[var(--color-text-primary)]">{entry.username}</span>
                         {entry.habitTips && entry.habitTips.length > 0 && (
                           <div className="text-[10px] text-[var(--color-text-muted)] mt-1 flex flex-col gap-0.5">
                             {entry.habitTips.map((habit, hIdx) => (
@@ -84,7 +84,7 @@ export default function Leaderboard() {
                     </td>
 
                     {/* Average daily */}
-                    <td className="py-4 px-4 font-bold text-white">
+                    <td className="py-4 px-4 font-bold text-[var(--color-text-primary)]">
                       {entry.averageDailyEmission} <span className="text-[10px] font-normal text-[var(--color-text-muted)]">kg/day</span>
                     </td>
 

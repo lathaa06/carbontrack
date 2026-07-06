@@ -27,14 +27,25 @@ public class UserService {
     public UserProfileResponse updateProfile(Long userId, UpdateProfileRequest request) {
         User user = findUserOrThrow(userId);
 
-        // Partial update: only touch a field if the caller actually sent one.
-        // This lets the frontend send { "preferredUnitSystem": "IMPERIAL" } alone
-        // without accidentally wiping goalVisibility back to null.
+        // Update username if requested and different
+        if (request.username() != null && !request.username().isBlank()) {
+            String newUsername = request.username().trim();
+            if (!newUsername.equalsIgnoreCase(user.getUsername())) {
+                if (userRepository.existsByUsernameIgnoreCase(newUsername)) {
+                    throw new com.team7.carbontrack.exception.DuplicateResourceException("Username is already taken: " + newUsername);
+                }
+                user.setUsername(newUsername);
+            }
+        }
+
         if (request.preferredUnitSystem() != null) {
             user.setPreferredUnitSystem(request.preferredUnitSystem());
         }
         if (request.goalVisibility() != null) {
             user.setGoalVisibility(request.goalVisibility());
+        }
+        if (request.profilePhoto() != null) {
+            user.setProfilePhoto(request.profilePhoto());
         }
 
         User saved = userRepository.save(user);

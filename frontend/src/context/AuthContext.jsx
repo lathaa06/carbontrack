@@ -16,17 +16,28 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (credentials) => {
     const data = await authService.login(credentials);
     localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('user', JSON.stringify(data));
-    setUser(data);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    setUser(data.user);
     return data;
   }, []);
 
   const register = useCallback(async (formData) => {
     const data = await authService.register(formData);
     localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('user', JSON.stringify(data));
-    setUser(data);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    setUser(data.user);
     return data;
+  }, []);
+
+  const loginWithToken = useCallback((token, userProfile) => {
+    localStorage.setItem('accessToken', token);
+    localStorage.setItem('user', JSON.stringify(userProfile));
+    setUser(userProfile);
+  }, []);
+
+  const updateUser = useCallback((updatedProfile) => {
+    localStorage.setItem('user', JSON.stringify(updatedProfile));
+    setUser(updatedProfile);
   }, []);
 
   const logout = useCallback(() => {
@@ -39,7 +50,7 @@ export function AuthProvider({ children }) {
   const isOrgAdmin = user?.role === 'ORG_ADMIN';
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated, isAdmin, isOrgAdmin }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated, isAdmin, isOrgAdmin, loginWithToken, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

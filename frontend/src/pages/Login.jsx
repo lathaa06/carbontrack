@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { FiMail, FiLock, FiLoader, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function Login() {
   const { login } = useAuth();
@@ -81,6 +82,21 @@ export default function Login() {
             {loading ? <FiLoader className="animate-spin" /> : 'Log In'}
           </button>
         </form>
+
+        <div className="flex items-center my-5">
+          <div className="flex-1 border-t border-[var(--color-border)]"></div>
+          <span className="px-3 text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider">Or</span>
+          <div className="flex-1 border-t border-[var(--color-border)]"></div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => window.location.href = '/oauth2/authorization/google'}
+          className="w-full btn-ghost flex items-center justify-center gap-2 py-2.5 bg-white text-[var(--color-text-primary)] hover:bg-[var(--color-bg-primary)] border-[var(--color-border)] font-semibold text-sm transition-all shadow-sm rounded-lg"
+        >
+          <FcGoogle className="text-lg" />
+          Continue with Google
+        </button>
 
         <div className="text-center mt-6">
           <p className="text-xs text-[var(--color-text-secondary)]">

@@ -4,9 +4,11 @@ import com.team7.carbontrack.entity.GoalVisibility;
 import com.team7.carbontrack.entity.UnitSystem;
 
 /**
- * Both fields are optional (partial update). Null means "leave unchanged".
+ * All fields are optional (partial update). Null means "leave unchanged".
  */
 public record UpdateProfileRequest(
+        String username,
         UnitSystem preferredUnitSystem,
-        GoalVisibility goalVisibility
+        GoalVisibility goalVisibility,
+        String profilePhoto
 ) {}

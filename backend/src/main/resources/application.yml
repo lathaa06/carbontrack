@@ -26,13 +26,13 @@ spring:
 
   # OAuth2 social login is disabled in dev mode.
   # To enable Google login, set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET env vars.
-  # security:
-  #   oauth2:
-  #     client:
-  #       registration:
-  #         google:
-  #           client-id: ${GOOGLE_CLIENT_ID:}
-  #           client-secret: ${GOOGLE_CLIENT_SECRET:}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
 
 app:
   jwt:

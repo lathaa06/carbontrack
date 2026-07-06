@@ -58,6 +58,9 @@ public class User {
     @Builder.Default
     private GoalVisibility goalVisibility = GoalVisibility.PRIVATE;
 
+    @Column(name = "profile_photo", columnDefinition = "TEXT")
+    private String profilePhoto;
+
     @Column(nullable = false)
     @Builder.Default
     private boolean enabled = true;

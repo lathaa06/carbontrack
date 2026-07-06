@@ -100,7 +100,7 @@ export default function LogActivity() {
 
       {/* Log Form Card */}
       <div className="glass-card p-8 relative overflow-hidden">
-        <h3 className="text-xl font-bold font-outfit mb-6 text-white capitalize">
+        <h3 className="text-xl font-bold font-outfit mb-6 text-[var(--color-text-primary)] capitalize">
           Log {activeCategory.toLowerCase()} Activity
         </h3>
 

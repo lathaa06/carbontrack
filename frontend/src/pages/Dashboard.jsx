@@ -105,29 +105,29 @@ export default function Dashboard() {
             <FiActivity className="text-lg" />
           </div>
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Today's Footprint</h4>
-          <h2 className="text-3xl font-bold font-outfit mt-2 text-white">
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-[var(--color-text-primary)]">
             {data.todayCo2e} <span className="text-sm font-medium text-[var(--color-text-secondary)]">kg CO₂e</span>
           </h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">Emissions logged today</p>
         </div>
 
         <div className="stat-card relative overflow-hidden">
-          <div className="absolute top-4 right-4 p-2 bg-blue-950/40 rounded-lg text-blue-400">
+          <div className="absolute top-4 right-4 p-2 bg-blue-50 border border-blue-100 rounded-lg text-blue-600">
             <FiCalendar className="text-lg" />
           </div>
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Weekly Footprint</h4>
-          <h2 className="text-3xl font-bold font-outfit mt-2 text-white">
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-[var(--color-text-primary)]">
             {data.weeklyCo2e} <span className="text-sm font-medium text-[var(--color-text-secondary)]">kg CO₂e</span>
           </h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">Last 7 days cumulative</p>
         </div>
 
         <div className="stat-card relative overflow-hidden">
-          <div className="absolute top-4 right-4 p-2 bg-purple-950/40 rounded-lg text-purple-400">
+          <div className="absolute top-4 right-4 p-2 bg-purple-50 border border-purple-100 rounded-lg text-purple-600">
             <FiCompass className="text-lg" />
           </div>
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Monthly Footprint</h4>
-          <h2 className="text-3xl font-bold font-outfit mt-2 text-white">
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-[var(--color-text-primary)]">
             {data.monthlyCo2e} <span className="text-sm font-medium text-[var(--color-text-secondary)]">kg CO₂e</span>
           </h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">Last 30 days cumulative</p>
@@ -142,7 +142,7 @@ export default function Dashboard() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData}>
-                <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <CartesianGrid stroke="var(--color-border)" vertical={false} />
                 <XAxis dataKey="name" stroke="var(--color-text-muted)" fontSize={11} />
                 <YAxis stroke="var(--color-text-muted)" fontSize={11} />
                 <Tooltip 
@@ -248,7 +248,7 @@ export default function Dashboard() {
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[var(--color-accent-dim)] border border-[var(--color-border)] text-3xl font-extrabold font-outfit text-[var(--color-accent)] mb-3 glow-green">
                 {data.percentileRank}%
               </div>
-              <h4 className="text-sm font-bold text-white">Better than {data.percentileRank}% of users</h4>
+              <h4 className="text-sm font-bold text-[var(--color-text-primary)]">Better than {data.percentileRank}% of users</h4>
               <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 leading-relaxed">
                 Based on your daily emissions in the last 30 days compared anonymously to other platform users.
               </p>

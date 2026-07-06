@@ -7,6 +7,7 @@ import { PrivateRoute, OrgAdminRoute, GuestRoute } from './routes/ProtectedRoute
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
 import Dashboard from './pages/Dashboard';
 import LogActivity from './pages/LogActivity';
 import Goals from './pages/Goals';
@@ -25,6 +26,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
+
+        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
@@ -67,7 +70,7 @@ export default function App() {
         pauseOnFocusLoss 
         draggable 
         pauseOnHover 
-        theme="dark" 
+        theme="light" 
       />
     </AuthProvider>
   );
