@@ -16,6 +16,7 @@ import Organisation from './pages/Organisation';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import DashboardLayout from './layouts/DashboardLayout';
+import Home from './pages/Home';
 
 export default function App() {
   return (
@@ -56,7 +57,7 @@ export default function App() {
         </Route>
 
         {/* Fallbacks */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
