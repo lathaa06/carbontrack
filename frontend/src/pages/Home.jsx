@@ -63,7 +63,7 @@ export default function Home() {
     setLoading(true);
     try {
       await login(data);
-      toast.success('Logged in successfully!');
+      toast.success('Logged in successfully!', { toastId: 'login-success' });
       setAuthModal(null);
       resetLoginForm();
       navigate('/dashboard');
@@ -82,7 +82,7 @@ export default function Home() {
     setLoading(true);
     try {
       await signup(data);
-      toast.success('Account created successfully!');
+      toast.success('Account created successfully!', { toastId: 'register-success' });
       setAuthModal(null);
       resetRegisterForm();
       navigate('/dashboard');
@@ -199,10 +199,33 @@ export default function Home() {
           ? 'bg-white/80 backdrop-blur-md border-b border-emerald-100/60 py-4 shadow-sm' 
           : 'bg-transparent py-6'
       }`}>
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group decoration-none">
-            <span className="text-2xl transform group-hover:rotate-12 transition-transform duration-300">🍀</span>
-            <span className="text-xl font-extrabold tracking-tight font-outfit text-[#0f291b] group-hover:text-emerald-700 transition-colors">
+        <div className="max-w-[1440px] mx-auto px-6 sm:px-10 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 decoration-none cursor-pointer">
+            <svg viewBox="0 0 100 100" className="w-8 h-8 flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="ringGrad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#4ade80" />
+                  <stop offset="50%" stopColor="#16a34a" />
+                  <stop offset="100%" stopColor="#15803d" />
+                </linearGradient>
+                <linearGradient id="leafLeft" x1="45" y1="40" x2="58" y2="75" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#22c55e" />
+                  <stop offset="100%" stopColor="#15803d" />
+                </linearGradient>
+                <linearGradient id="leafRight" x1="58" y1="40" x2="70" y2="75" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#15803d" />
+                  <stop offset="100%" stopColor="#14532d" />
+                </linearGradient>
+              </defs>
+              <path d="M 50,14 A 36,36 0 1,1 30,22" stroke="url(#ringGrad)" strokeWidth="7" strokeLinecap="round" />
+              <path d="M 41,6 L 54,14 L 41,22 Z" fill="#4ade80" />
+              <path d="M 28,34 C 20,48 24,66 38,74 C 30,64 28,50 34,36 C 35,34 32,32 28,34 Z" fill="#166534" />
+              <path d="M 37,42 C 31,54 33,68 44,74 C 38,66 36,54 41,43 C 42,41 39,40 37,42 Z" fill="#15803d" />
+              <path d="M 49,75 C 44,60 47,44 57,36 C 58,48 56,62 49,75 Z" fill="url(#leafLeft)" />
+              <path d="M 49,75 C 56,62 58,48 57,36 C 68,40 73,53 69,67 C 66,73 58,76 49,75 Z" fill="url(#leafRight)" />
+              <path d="M 49,75 C 53,62 55,48 57,36" stroke="#bbf7d0" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <span className="text-xl font-extrabold tracking-tight font-outfit text-[#0f291b] transition-colors">
               Carbon<span className="text-emerald-600">Track</span>
             </span>
           </Link>
@@ -361,7 +384,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#f4faf6]/95 via-[#f4faf6]/60 to-transparent z-10" />
 
         {/* Hero Content (Left Aligned for high video visibility) */}
-        <div className="relative z-20 max-w-7xl mx-auto px-8 sm:px-12 w-full flex items-center justify-start">
+        <div className="relative z-20 max-w-[1440px] mx-auto px-8 sm:px-10 w-full flex items-center justify-start">
           <div className="max-w-2xl text-left flex flex-col items-start animate-fade-in">
             
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200 text-xs font-semibold text-emerald-800 mb-6 tracking-wider uppercase shadow-sm">
@@ -536,7 +559,30 @@ export default function Home() {
       <footer className="py-10 bg-white border-t border-emerald-100/60 text-[#708b7b] text-sm">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <span>🍀</span>
+            <svg viewBox="0 0 100 100" className="w-8 h-8 flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="ringGradFooter" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#4ade80" />
+                  <stop offset="50%" stopColor="#16a34a" />
+                  <stop offset="100%" stopColor="#15803d" />
+                </linearGradient>
+                <linearGradient id="leafLeftFooter" x1="45" y1="40" x2="58" y2="75" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#22c55e" />
+                  <stop offset="100%" stopColor="#15803d" />
+                </linearGradient>
+                <linearGradient id="leafRightFooter" x1="58" y1="40" x2="70" y2="75" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#15803d" />
+                  <stop offset="100%" stopColor="#14532d" />
+                </linearGradient>
+              </defs>
+              <path d="M 50,14 A 36,36 0 1,1 30,22" stroke="url(#ringGradFooter)" strokeWidth="7" strokeLinecap="round" />
+              <path d="M 41,6 L 54,14 L 41,22 Z" fill="#4ade80" />
+              <path d="M 28,34 C 20,48 24,66 38,74 C 30,64 28,50 34,36 C 35,34 32,32 28,34 Z" fill="#166534" />
+              <path d="M 37,42 C 31,54 33,68 44,74 C 38,66 36,54 41,43 C 42,41 39,40 37,42 Z" fill="#15803d" />
+              <path d="M 49,75 C 44,60 47,44 57,36 C 58,48 56,62 49,75 Z" fill="url(#leafLeftFooter)" />
+              <path d="M 49,75 C 56,62 58,48 57,36 C 68,40 73,53 69,67 C 66,73 58,76 49,75 Z" fill="url(#leafRightFooter)" />
+              <path d="M 49,75 C 53,62 55,48 57,36" stroke="#bbf7d0" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
             <span className="font-extrabold font-outfit text-[#0f291b]">Carbon<span className="text-emerald-600">Track</span></span>
           </div>
           <p>© {new Date().getFullYear()} CarbonTrack. All rights reserved. Built for global sustainability.</p>

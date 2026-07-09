@@ -20,46 +20,48 @@ import Home from './pages/Home';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        {/* Guest Routes */}
-        <Route element={<GuestRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
+    <>
+      <AuthProvider>
+        <Routes>
+          {/* Guest Routes */}
+          <Route element={<GuestRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
 
-        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
-        {/* Private Routes */}
-        <Route element={<PrivateRoute />}>
-          <Route element={<DashboardLayout title="Dashboard" />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+          {/* Private Routes */}
+          <Route element={<PrivateRoute />}>
+            <Route element={<DashboardLayout title="Dashboard" />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+            <Route element={<DashboardLayout title="Log Daily Activities" />}>
+              <Route path="/log-activity" element={<LogActivity />} />
+            </Route>
+            <Route element={<DashboardLayout title="Carbon Goals & Milestones" />}>
+              <Route path="/goals" element={<Goals />} />
+            </Route>
+            <Route element={<DashboardLayout title="Community Rankings" />}>
+              <Route path="/leaderboard" element={<Leaderboard />} />
+            </Route>
+            <Route element={<DashboardLayout title="User Preferences" />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Route>
-          <Route element={<DashboardLayout title="Log Daily Activities" />}>
-            <Route path="/log-activity" element={<LogActivity />} />
-          </Route>
-          <Route element={<DashboardLayout title="Carbon Goals & Milestones" />}>
-            <Route path="/goals" element={<Goals />} />
-          </Route>
-          <Route element={<DashboardLayout title="Community Rankings" />}>
-            <Route path="/leaderboard" element={<Leaderboard />} />
-          </Route>
-          <Route element={<DashboardLayout title="User Preferences" />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-        </Route>
 
-        {/* Org Admin Routes */}
-        <Route element={<OrgAdminRoute />}>
-          <Route element={<DashboardLayout title="Corporate CSR Dashboard" />}>
-            <Route path="/organisation" element={<Organisation />} />
+          {/* Org Admin Routes */}
+          <Route element={<OrgAdminRoute />}>
+            <Route element={<DashboardLayout title="Corporate CSR Dashboard" />}>
+              <Route path="/organisation" element={<Organisation />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Fallbacks */}
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* Fallbacks */}
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
 
       <ToastContainer 
         position="top-right" 
@@ -73,6 +75,6 @@ export default function App() {
         pauseOnHover 
         theme="light" 
       />
-    </AuthProvider>
+    </>
   );
 }

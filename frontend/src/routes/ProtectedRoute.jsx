@@ -3,12 +3,12 @@ import { useAuth } from '../context/AuthContext';
 
 export function PrivateRoute() {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 export function OrgAdminRoute() {
   const { isAuthenticated, isOrgAdmin } = useAuth();
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/" replace />;
   if (!isOrgAdmin) return <Navigate to="/dashboard" replace />;
   return <Outlet />;
 }

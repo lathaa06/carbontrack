@@ -17,7 +17,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(data);
-      toast.success('Logged in successfully!');
+      toast.success('Logged in successfully!', { toastId: 'login-success' });
       navigate('/dashboard');
     } catch (err) {
       if (!err.response) {

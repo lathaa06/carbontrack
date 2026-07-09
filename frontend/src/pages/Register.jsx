@@ -17,7 +17,7 @@ export default function Register() {
     setLoading(true);
     try {
       await signup(data);
-      toast.success('Account created successfully!');
+      toast.success('Account created successfully!', { toastId: 'register-success' });
       navigate('/dashboard');
     } catch (err) {
       if (!err.response) {

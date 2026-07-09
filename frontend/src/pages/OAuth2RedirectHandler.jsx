@@ -19,7 +19,7 @@ export default function OAuth2RedirectHandler() {
       profileService.getProfile()
         .then((profile) => {
           loginWithToken(token, profile);
-          toast.success('Logged in with Google successfully!');
+          toast.success('Logged in with Google successfully!', { toastId: 'google-login-success' });
           navigate('/dashboard');
         })
         .catch((err) => {
