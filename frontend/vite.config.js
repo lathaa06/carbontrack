@@ -14,7 +14,7 @@ export default defineConfig({
         target: 'http://localhost:8081',
         changeOrigin: true,
       },
-      '/oauth2': {
+      '/oauth2/authorization': {
         target: 'http://localhost:8081',
         changeOrigin: true,
       },
