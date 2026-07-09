@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -80,7 +81,15 @@ public class SecurityConfig {
         // Only enable Google login if a real client registration exists (i.e. env
         // vars were actually set). Keeps JWT-only startup working when they aren't.
         ClientRegistrationRepository clientRegistrationRepository = clientRegistrationRepositoryProvider.getIfAvailable();
+        boolean isGoogleConfigured = false;
         if (clientRegistrationRepository != null) {
+            ClientRegistration googleReg = clientRegistrationRepository.findByRegistrationId("google");
+            if (googleReg != null && !"dummy-id".equals(googleReg.getClientId()) && !googleReg.getClientId().isBlank()) {
+                isGoogleConfigured = true;
+            }
+        }
+
+        if (isGoogleConfigured) {
             OAuth2LoginSuccessHandler successHandler = oAuth2LoginSuccessHandlerProvider.getObject();
             http.oauth2Login(oauth2 -> oauth2.successHandler(successHandler));
         }

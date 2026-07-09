@@ -5,6 +5,7 @@ import com.team7.carbontrack.entity.Goal;
 import com.team7.carbontrack.entity.GoalStatus;
 import com.team7.carbontrack.repository.ActivityLogRepository;
 import com.team7.carbontrack.repository.GoalRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class GoalService {
     }
 
     @Transactional
+    @CacheEvict(value = "analytics", key = "#userId")
     public Goal createGoal(Long userId, BigDecimal targetReductionPct, Integer periodDays) {
         // Deactivate existing active goals
         List<Goal> activeGoals = goalRepository.findByUserIdAndStatus(userId, GoalStatus.ACTIVE);
@@ -85,9 +87,18 @@ public class GoalService {
         Goal goal = active.get(0);
         LocalDate today = LocalDate.now();
 
+        // Days elapsed
+        long daysElapsed = ChronoUnit.DAYS.between(goal.getStartDate(), today) + 1;
+
+        // Bound evaluation end-date to the end of the goal period if it has ended
+        LocalDate evaluationEndDate = today;
+        if (daysElapsed > goal.getPeriodDays()) {
+            evaluationEndDate = goal.getStartDate().plusDays(goal.getPeriodDays() - 1);
+        }
+
         // Calculate current emissions in this goal period
         BigDecimal currentCo2e = activityLogRepository.findByUserIdAndLogDateBetween(
-                userId, goal.getStartDate(), today
+                userId, goal.getStartDate(), evaluationEndDate
         ).stream()
                 .map(com.team7.carbontrack.entity.ActivityLog::getCo2eKg)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
@@ -100,9 +111,6 @@ public class GoalService {
         BigDecimal targetCo2e = goal.getBaselineCo2eKg()
                 .multiply(multiplier)
                 .setScale(2, RoundingMode.HALF_UP);
-
-        // Days elapsed
-        long daysElapsed = ChronoUnit.DAYS.between(goal.getStartDate(), today) + 1;
 
         // Check if goal period has ended
         if (daysElapsed > goal.getPeriodDays()) {

@@ -31,8 +31,9 @@ spring:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID:}
-            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            client-id: ${GOOGLE_CLIENT_ID:dummy-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:dummy-secret}
+            redirect-uri: "http://localhost:5173/login/oauth2/code/google"
 
 app:
   jwt:

@@ -54,7 +54,7 @@ public class User {
     private UnitSystem preferredUnitSystem = UnitSystem.METRIC;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "goal_visibility", nullable = false, length = 10)
+    @Column(name = "goal_visibility", nullable = false, length = 20)
     @Builder.Default
     private GoalVisibility goalVisibility = GoalVisibility.PRIVATE;
 
