@@ -41,9 +41,21 @@ public class AnalyticsService {
         LocalDate thirtyDaysAgo = today.minusDays(29);
 
         // 1. Current carbon sums
-        BigDecimal todayCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, today, today));
-        BigDecimal weeklyCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, sevenDaysAgo, today));
-        BigDecimal monthlyCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, thirtyDaysAgo, today));
+        //BigDecimal todayCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, today, today));
+        //BigDecimal weeklyCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, sevenDaysAgo, today));
+       // BigDecimal monthlyCo2e = sumEmissions(activityLogRepository.findByUserIdAndLogDateBetween(userId, thirtyDaysAgo, today));
+        // 1. Current carbon sums using JPQL aggregation queries ( milestone 2)
+        BigDecimal todayCo2e = activityLogRepository
+                .getTotalEmissions(userId, today, today)
+                .setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal weeklyCo2e = activityLogRepository
+                .getTotalEmissions(userId, sevenDaysAgo, today)
+                .setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal monthlyCo2e = activityLogRepository
+                .getTotalEmissions(userId, thirtyDaysAgo, today)
+                .setScale(2, RoundingMode.HALF_UP);
 
         // 2. Category-wise breakdown
         List<CategoryEmission> categoryBreakdown = activityLogRepository.getEmissionsByCategory(userId, thirtyDaysAgo, today);
@@ -130,12 +142,12 @@ public class AnalyticsService {
         );
     }
 
-    private BigDecimal sumEmissions(List<com.team7.carbontrack.entity.ActivityLog> logs) {
-        return logs.stream()
-                .map(com.team7.carbontrack.entity.ActivityLog::getCo2eKg)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, RoundingMode.HALF_UP);
-    }
+    //private BigDecimal sumEmissions(List<com.team7.carbontrack.entity.ActivityLog> logs) {
+       // return logs.stream()
+              //  .map(com.team7.carbontrack.entity.ActivityLog::getCo2eKg)
+               // .reduce(BigDecimal.ZERO, BigDecimal::add)
+                //.setScale(2, RoundingMode.HALF_UP);
+   // }
 
     private List<DailyEmission> fillMissingDates(List<DailyEmission> existing, LocalDate start, LocalDate end) {
         Map<LocalDate, BigDecimal> map = new HashMap<>();
