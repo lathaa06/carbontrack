@@ -55,5 +55,17 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
            "FROM ActivityLog al JOIN User u ON al.userId = u.id " +
            "WHERE u.orgId = :orgId AND al.logDate BETWEEN :startDate AND :endDate")
     BigDecimal getOrganisationTotalEmissions(Long orgId, LocalDate startDate, LocalDate endDate);
+
+    @Query("""
+       SELECT COALESCE(SUM(al.co2eKg), 0)
+       FROM ActivityLog al
+       WHERE al.userId = :userId
+       AND al.logDate BETWEEN :startDate AND :endDate
+       """)
+    BigDecimal getTotalEmissions(
+            Long userId,
+            LocalDate startDate,
+            LocalDate endDate
+    );
 }
 
