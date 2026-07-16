@@ -83,7 +83,7 @@ export default function Goals() {
               </div>
               <div className="flex justify-between items-center text-xs">
                 <span className="font-semibold text-[var(--color-text-secondary)]">Target (Reduction)</span>
-                <span className="text-[var(--color-accent-light)] font-bold">
+                <span className="text-[var(--color-accent)] font-bold">
                   {activeGoal.targetCo2e} kg CO₂e (-{activeGoal.targetReductionPct}%)
                 </span>
               </div>

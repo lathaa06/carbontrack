@@ -16,9 +16,15 @@ public record UserProfileResponse(
         UnitSystem preferredUnitSystem,
         GoalVisibility goalVisibility,
         String profilePhoto,
-        Instant createdAt
+        Instant createdAt,
+        String selectedBadge,
+        java.util.List<String> badges
 ) {
     public static UserProfileResponse from(User user) {
+        return from(user, java.util.List.of());
+    }
+
+    public static UserProfileResponse from(User user, java.util.List<String> badges) {
         return new UserProfileResponse(
                 user.getId(),
                 user.getUsername(),
@@ -28,7 +34,9 @@ public record UserProfileResponse(
                 user.getPreferredUnitSystem(),
                 user.getGoalVisibility(),
                 user.getProfilePhoto(),
-                user.getCreatedAt()
+                user.getCreatedAt(),
+                user.getSelectedBadge(),
+                badges
         );
     }
 }

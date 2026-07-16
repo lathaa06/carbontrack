@@ -5,10 +5,10 @@ import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, 
 import { FiShield, FiTrendingUp, FiTrendingDown, FiActivity, FiUsers, FiInfo } from 'react-icons/fi';
 
 const CATEGORY_COLORS = {
-  TRANSPORT: '#22c55e',
-  ELECTRICITY: '#3b82f6',
-  FOOD: '#eab308',
-  SHOPPING: '#ec4899',
+  TRANSPORT: '#10b981',
+  ELECTRICITY: '#06b6d4',
+  FOOD: '#f59e0b',
+  SHOPPING: '#ef4444',
 };
 
 export default function Organisation() {
@@ -94,13 +94,13 @@ export default function Organisation() {
             <p className="text-xs mt-2 flex items-center gap-1">
               {isIncrease ? (
                 <>
-                  <FiTrendingUp className="text-red-600" />
-                  <span className="text-red-600 font-semibold">+{momChange}%</span>
+                  <FiTrendingUp className="text-[var(--color-danger)]" />
+                  <span className="text-[var(--color-danger)] font-semibold">+{momChange}%</span>
                 </>
               ) : (
                 <>
-                  <FiTrendingDown className="text-emerald-600" />
-                  <span className="text-emerald-600 font-semibold">{momChange}%</span>
+                  <FiTrendingDown className="text-[var(--color-accent)]" />
+                  <span className="text-[var(--color-accent)] font-semibold">{momChange}%</span>
                 </>
               )}
               <span className="text-[var(--color-text-muted)]">vs last month ({data.previousMonthEmissions} kg)</span>
@@ -160,7 +160,7 @@ export default function Organisation() {
                 data.employees.map((emp) => (
                   <tr key={emp.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors">
                     <td className="py-4 px-4 font-semibold text-[var(--color-text-primary)]">{emp.username}</td>
-                    <td className="py-4 px-4 font-bold text-[var(--color-accent-light)]">
+                    <td className="py-4 px-4 font-bold text-[var(--color-accent-muted)]">
                       {emp.totalCo2e} <span className="text-[10px] font-normal text-[var(--color-text-muted)]">kg CO₂e</span>
                     </td>
                     <td className="py-4 px-4 text-center">

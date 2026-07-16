@@ -35,6 +35,10 @@ export const activityService = {
     const res = await api.get(`/activities/${id}`);
     return res.data;
   },
+  deleteActivity: async (id) => {
+    const res = await api.delete(`/activities/${id}`);
+    return res.data;
+  },
 };
 
 export const goalService = {

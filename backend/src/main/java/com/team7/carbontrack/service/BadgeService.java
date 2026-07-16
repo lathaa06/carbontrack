@@ -37,18 +37,24 @@ public class BadgeService {
         Long userId = event.getUserId();
         ActivityLog log = event.getActivityLog();
 
-        // 1. Streak check (7-day logging streak of TRANSPORT)
+        // 1. First Log check
+        long activityCount = activityLogRepository.countByUserId(userId);
+        if (activityCount >= 1) {
+            awardBadge(userId, "First Log");
+        }
+
+        // 2. Streak check (7, 15, 30 day logging streak of TRANSPORT)
         if (log.getCategory() == ActivityCategory.TRANSPORT) {
             LocalDate logDate = log.getLogDate();
             List<ActivityLog> transportLogs = activityLogRepository.findByUserIdAndCategoryAndLogDateBetween(
-                    userId, ActivityCategory.TRANSPORT, logDate.minusDays(15), logDate
+                    userId, ActivityCategory.TRANSPORT, logDate.minusDays(45), logDate
             );
             Set<LocalDate> dates = transportLogs.stream()
                     .map(ActivityLog::getLogDate)
                     .collect(Collectors.toSet());
 
             int currentStreak = 0;
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 45; i++) {
                 if (dates.contains(logDate.minusDays(i))) {
                     currentStreak++;
                 } else {
@@ -58,6 +64,12 @@ public class BadgeService {
 
             if (currentStreak >= 7) {
                 awardBadge(userId, "Green Commuter");
+            }
+            if (currentStreak >= 15) {
+                awardBadge(userId, "Eco Warrior");
+            }
+            if (currentStreak >= 30) {
+                awardBadge(userId, "Planet Protector");
             }
         }
     }

@@ -48,4 +48,11 @@ public class ActivityController {
                                                                @PathVariable Long id) {
         return ResponseEntity.ok(activityLogService.getUserActivityLog(principal.getId(), id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteActivity(@AuthenticationPrincipal UserPrincipal principal,
+                                               @PathVariable Long id) {
+        activityLogService.deleteActivityLog(principal.getId(), id);
+        return ResponseEntity.noContent().build();
+    }
 }

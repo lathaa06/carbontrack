@@ -34,7 +34,7 @@ export default function Register() {
     <div className="min-h-screen bg-[var(--color-bg-primary)] flex items-center justify-center p-4">
       <div className="glass-card w-full max-w-md p-8 relative overflow-hidden">
         <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-[var(--color-accent)] opacity-5 blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-emerald-500 opacity-5 blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-[var(--color-accent-blue)] opacity-5 blur-3xl"></div>
 
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-outfit gradient-text">Create Account</h1>
@@ -114,7 +114,7 @@ export default function Register() {
         <button
           type="button"
           onClick={() => window.location.href = '/oauth2/authorization/google'}
-          className="w-full btn-ghost flex items-center justify-center gap-2 py-2.5 bg-white text-[var(--color-text-primary)] hover:bg-[var(--color-bg-primary)] border-[var(--color-border)] font-semibold text-sm transition-all shadow-sm rounded-lg"
+          className="w-full btn-ghost flex items-center justify-center gap-2 py-2.5 bg-[var(--color-bg-card)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card-hover)] border-[var(--color-border)] font-semibold text-sm transition-all shadow-sm rounded-lg cursor-pointer"
         >
           <FcGoogle className="text-lg" />
           Continue with Google

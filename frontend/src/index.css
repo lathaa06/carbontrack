@@ -2,19 +2,22 @@
 
 @layer base {
   :root {
-    --color-bg-primary: #f4faf6;
+    --color-bg-primary: #f8fafc;
     --color-bg-secondary: #ffffff;
     --color-bg-card: #ffffff;
-    --color-bg-card-hover: #ecfdf5;
-    --color-accent: #15803d;
-    --color-accent-light: #16a34a;
-    --color-accent-muted: #166534;
-    --color-accent-dim: rgba(21, 128, 61, 0.08);
-    --color-text-primary: #0f291b;
-    --color-text-secondary: #385846;
-    --color-text-muted: #708b7b;
-    --color-border: #d8ebd9;
-    --color-border-hover: #a9d4ab;
+    --color-bg-card-hover: #f0fdf4;
+    --color-accent: #10b981;
+    --color-accent-blue: #06b6d4;
+    --color-accent-light: #34d399;
+    --color-accent-muted: #059669;
+    --color-accent-dim: rgba(16, 185, 129, 0.05);
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-border-hover: #cbd5e1;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
   }
 
   html,
@@ -50,23 +53,23 @@
 
 @layer components {
   .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.8);
     border-radius: 16px;
     backdrop-filter: blur(12px);
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
   }
 
   .glass-card:hover {
-    border-color: var(--color-border-hover);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 1) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 30px rgba(21, 128, 61, 0.06);
+    border-color: rgba(16, 185, 129, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.08);
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-muted) 100%);
     color: white;
     font-weight: 600;
     padding: 0.625rem 1.5rem;
@@ -80,8 +83,8 @@
 
   .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(21, 128, 61, 0.25);
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+    background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
   }
 
   .btn-primary:active {
@@ -113,20 +116,20 @@
   }
 
   .input-field {
-    background: #ffffff;
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: 10px;
     color: var(--color-text-primary);
     padding: 0.75rem 1rem;
     width: 100%;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.9rem;
     outline: none;
   }
 
   .input-field:focus {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.10);
   }
 
   .input-field::placeholder {
@@ -134,28 +137,28 @@
   }
 
   .label {
-    color: var(--color-text-secondary);
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
     display: block;
   }
 
   .stat-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+    background: #ffffff;
     border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 1.5rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
   }
 
   .stat-card:hover {
-    border-color: var(--color-border-hover);
+    border-color: rgba(16, 185, 129, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(21, 128, 61, 0.06);
+    box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.08);
   }
 
   .badge {
@@ -169,27 +172,27 @@
   }
 
   .badge-green {
-    background: rgba(34, 197, 94, 0.15);
+    background: rgba(16, 185, 129, 0.15);
     color: var(--color-accent);
-    border: 1px solid rgba(34, 197, 94, 0.25);
+    border: 1px solid rgba(16, 185, 129, 0.25);
   }
 
   .badge-red {
     background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
+    color: var(--color-danger);
     border: 1px solid rgba(239, 68, 68, 0.25);
   }
 
   .badge-yellow {
-    background: rgba(234, 179, 8, 0.15);
-    color: #fbbf24;
-    border: 1px solid rgba(234, 179, 8, 0.25);
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-warning);
+    border: 1px solid rgba(245, 158, 11, 0.25);
   }
 
   .badge-blue {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-    border: 1px solid rgba(59, 130, 246, 0.25);
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--color-accent-blue);
+    border: 1px solid rgba(6, 182, 212, 0.25);
   }
 
   .nav-link {
@@ -271,7 +274,7 @@
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 50%, var(--color-accent-blue) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -346,5 +349,27 @@
     color: #f87171;
     font-size: 0.78rem;
     margin-top: 0.25rem;
+  }
+
+  .animate-fade-in {
+    animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-scale-up {
+    animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes modalScaleUp {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }

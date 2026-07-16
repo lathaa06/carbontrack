@@ -10,5 +10,6 @@ public record UpdateProfileRequest(
         String username,
         UnitSystem preferredUnitSystem,
         GoalVisibility goalVisibility,
-        String profilePhoto
+        String profilePhoto,
+        String selectedBadge
 ) {}

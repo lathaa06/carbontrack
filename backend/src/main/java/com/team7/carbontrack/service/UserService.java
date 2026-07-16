@@ -8,20 +8,26 @@ import com.team7.carbontrack.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BadgeService badgeService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BadgeService badgeService) {
         this.userRepository = userRepository;
+        this.badgeService = badgeService;
     }
 
     @Transactional(readOnly = true)
     public UserProfileResponse getProfile(Long userId) {
         User user = findUserOrThrow(userId);
-        return UserProfileResponse.from(user);
+        List<String> badgeNames = badgeService.getUserBadges(userId).stream()
+                .map(com.team7.carbontrack.entity.Badge::getName)
+                .collect(java.util.stream.Collectors.toList());
+        return UserProfileResponse.from(user, badgeNames);
     }
 
     @Transactional
@@ -47,11 +53,24 @@ public class UserService {
             user.setGoalVisibility(request.goalVisibility());
         }
         if (request.profilePhoto() != null) {
-            user.setProfilePhoto(request.profilePhoto());
+            user.setProfilePhoto(request.profilePhoto().trim().isEmpty() ? null : request.profilePhoto());
+        }
+        if (request.selectedBadge() != null) {
+            List<String> userBadges = badgeService.getUserBadges(userId).stream()
+                    .map(com.team7.carbontrack.entity.Badge::getName)
+                    .collect(java.util.stream.Collectors.toList());
+            if (request.selectedBadge().isEmpty() || userBadges.contains(request.selectedBadge())) {
+                user.setSelectedBadge(request.selectedBadge().isEmpty() ? null : request.selectedBadge());
+            } else {
+                throw new IllegalArgumentException("You have not earned the badge: " + request.selectedBadge());
+            }
         }
 
         User saved = userRepository.save(user);
-        return UserProfileResponse.from(saved);
+        List<String> badgeNames = badgeService.getUserBadges(userId).stream()
+                .map(com.team7.carbontrack.entity.Badge::getName)
+                .collect(java.util.stream.Collectors.toList());
+        return UserProfileResponse.from(saved, badgeNames);
     }
 
     private User findUserOrThrow(Long userId) {

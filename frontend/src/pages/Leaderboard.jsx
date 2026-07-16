@@ -3,9 +3,30 @@ import { leaderboardService } from '../services/api';
 import { toast } from 'react-toastify';
 import { FiAward, FiInfo, FiSmile, FiCheckCircle } from 'react-icons/fi';
 
+const getBadgeIcon = (badgeName) => {
+  const meta = {
+    'Green Commuter': '🚗🌱',
+    'Eco Warrior': '🚴🌲',
+    'Planet Protector': '👑🌍',
+    'First Step': '👣✨',
+    'Carbon Saver 10': '🌱🔋',
+    'Carbon Saver 25': '🌲🌳',
+    'Carbon Saver 50': '🌎🛡️',
+  };
+  return meta[badgeName] || '🏆';
+};
+
 export default function Leaderboard() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedUserIds, setExpandedUserIds] = useState({});
+
+  const toggleHabits = (userId) => {
+    setExpandedUserIds((prev) => ({
+      ...prev,
+      [userId]: !prev[userId],
+    }));
+  };
 
   useEffect(() => {
     async function fetchLeaderboard() {
@@ -58,7 +79,7 @@ export default function Leaderboard() {
                     <td className="py-4 px-4 text-center">
                       <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full font-bold text-xs ${
                         index === 0 ? 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' :
-                        index === 1 ? 'bg-slate-100 text-slate-700 border border-slate-200' :
+                        index === 1 ? 'bg-slate-500/20 text-slate-300 border border-slate-500/30' :
                         index === 2 ? 'bg-amber-600/20 text-amber-600 border border-amber-600/30' :
                         'bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] border border-[var(--color-border)]'
                       }`}>
@@ -66,18 +87,38 @@ export default function Leaderboard() {
                       </span>
                     </td>
                     
-                    {/* Username & Habits Popup */}
+                    {/* Username & Collapsible Habits */}
                     <td className="py-4 px-4">
                       <div>
-                        <span className="font-semibold text-[var(--color-text-primary)]">{entry.username}</span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-semibold text-[var(--color-text-primary)]">{entry.username}</span>
+                          {entry.selectedBadge && (
+                            <span 
+                              className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-[var(--color-accent-dim)] border border-[var(--color-accent)]/20 text-[9px] font-bold text-[var(--color-accent-muted)]"
+                              title={entry.selectedBadge}
+                            >
+                              {getBadgeIcon(entry.selectedBadge)} {entry.selectedBadge}
+                            </span>
+                          )}
+                        </div>
                         {entry.habitTips && entry.habitTips.length > 0 && (
-                          <div className="text-[10px] text-[var(--color-text-muted)] mt-1 flex flex-col gap-0.5">
-                            {entry.habitTips.map((habit, hIdx) => (
-                              <span key={hIdx} className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0"></span>
-                                {habit}
-                              </span>
-                            ))}
+                          <div className="mt-1">
+                            <button
+                              onClick={() => toggleHabits(entry.userId)}
+                              className="text-[10px] text-[var(--color-accent)] font-bold hover:underline cursor-pointer flex items-center gap-1 bg-transparent border-none outline-none p-0"
+                            >
+                              {expandedUserIds[entry.userId] ? 'Hide Habits' : 'Follow Habits'}
+                            </button>
+                            {expandedUserIds[entry.userId] && (
+                              <div className="mt-2 bg-slate-50 border border-slate-200/40 p-2.5 rounded-xl flex flex-col gap-1.5 animate-slide-in">
+                                {entry.habitTips.map((habit, hIdx) => (
+                                  <span key={hIdx} className="flex items-center gap-2 text-[10px] text-[var(--color-text-secondary)] font-medium">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0"></span>
+                                    {habit}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

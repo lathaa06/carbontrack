@@ -84,7 +84,8 @@ public class LeaderboardController {
                     avgDaily,
                     badgeNames,
                     categoryStrength,
-                    habits
+                    habits,
+                    u.getSelectedBadge()
             ));
         }
 

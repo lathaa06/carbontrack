@@ -67,4 +67,16 @@ public class ActivityLogService {
         }
         return ActivityLogResponse.from(log);
     }
+
+    @Transactional
+    @org.springframework.cache.annotation.CacheEvict(value = "analytics", key = "#userId")
+    public void deleteActivityLog(Long userId, Long logId) {
+        ActivityLog log = activityLogRepository.findById(logId)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity log not found: " + logId));
+
+        if (!log.getUserId().equals(userId)) {
+            throw new ResourceNotFoundException("Activity log not found: " + logId);
+        }
+        activityLogRepository.delete(log);
+    }
 }

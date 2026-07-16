@@ -9,5 +9,6 @@ public record LeaderboardEntry(
     BigDecimal averageDailyEmission,
     List<String> badges,
     String categoryStrength,
-    List<String> habitTips
+    List<String> habitTips,
+    String selectedBadge
 ) {}

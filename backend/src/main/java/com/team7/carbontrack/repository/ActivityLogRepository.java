@@ -17,6 +17,8 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
 
     Page<ActivityLog> findByUserIdOrderByLogDateDesc(Long userId, Pageable pageable);
 
+    long countByUserId(Long userId);
+
     List<ActivityLog> findByUserIdAndCategoryAndLogDateBetween(
             Long userId, ActivityCategory category, LocalDate from, LocalDate to);
 

@@ -22,47 +22,48 @@ export default function Navbar({ title, sidebarOpen, onToggleSidebar }) {
   };
 
   return (
-    <header className="h-16 bg-[#16a34a] text-white flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
+    <header className="h-16 bg-[var(--color-bg-secondary)]/80 text-[var(--color-text-primary)] border-b border-[var(--color-border)]/50 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-40">
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="text-white hover:text-emerald-100 hover:bg-[#128a3e] p-2 rounded-lg transition cursor-pointer bg-transparent border-none outline-none flex items-center justify-center"
+          className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card)] p-2 rounded-lg transition cursor-pointer bg-transparent border-none outline-none flex items-center justify-center"
           title={sidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
           aria-label="Toggle Sidebar"
         >
           <FiMenu className="text-xl" />
         </button>
-        <h2 className="text-lg font-bold font-outfit text-white tracking-wide">{title}</h2>
+        <h2 className="text-lg font-bold font-outfit text-[var(--color-text-primary)] tracking-wide">{title}</h2>
       </div>
       
       <div className="flex items-center gap-4">
         {/* Interactive Unit Selector */}
-        <div className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#128a3e]/40 border border-[#128a3e]/60 text-xs text-emerald-100 font-semibold hover:border-emerald-500 hover:text-white transition">
-          <FiGlobe className="text-emerald-200" />
+        <div className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] font-semibold hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)] transition">
+          <FiGlobe className="text-[var(--color-accent-blue)]" />
           <span className="mr-1">System:</span>
           <select
             value={user?.preferredUnitSystem || 'METRIC'}
             onChange={handleUnitSystemChange}
-            className="bg-transparent border-none outline-none font-bold text-white cursor-pointer pr-1"
+            className="bg-transparent border-none outline-none font-bold text-[var(--color-text-primary)] cursor-pointer pr-1"
           >
-            <option value="METRIC" className="bg-[#064e3b] text-white">METRIC</option>
-            <option value="IMPERIAL" className="bg-[#064e3b] text-white">IMPERIAL</option>
+            <option value="METRIC" className="bg-[var(--color-bg-card)] text-[var(--color-text-primary)]">METRIC</option>
+            <option value="IMPERIAL" className="bg-[var(--color-bg-card)] text-[var(--color-text-primary)]">IMPERIAL</option>
           </select>
         </div>
 
+        {/* Profile Avatar Capsule */}
         <div 
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-3 hover:bg-[#128a3e]/50 py-1.5 px-3 rounded-xl cursor-pointer transition duration-200 border border-transparent hover:border-[#128a3e]/40 shadow-sm"
+          className="flex items-center gap-2 pl-2 py-1 pr-3 hover:bg-[var(--color-bg-card-hover)] border border-[var(--color-border)] rounded-full cursor-pointer transition duration-200 shadow-sm"
           title="View Profile"
         >
-          <span className="text-xs text-emerald-100 font-medium">Hello, <strong className="text-white font-bold">{user?.username}</strong></span>
           {user?.profilePhoto ? (
-            <img src={user.profilePhoto} alt={user.username} className="w-8 h-8 rounded-full object-cover border border-[#128a3e]/40" />
+            <img src={user.profilePhoto} alt={user.username} className="w-7 h-7 rounded-full object-cover border border-[var(--color-border)]/50" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-[#128a3e] border border-[#128a3e]/30 flex items-center justify-center font-bold text-white text-[10px] uppercase">
-              {(user?.username || 'U').substring(0, 2)}
+            <div className="w-7 h-7 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)]/50 flex items-center justify-center font-bold text-[var(--color-accent)] text-[10px] uppercase">
+              {user?.username?.substring(0, 2)}
             </div>
           )}
+          <span className="text-xs font-bold text-[var(--color-text-secondary)]">{user?.username}</span>
         </div>
       </div>
     </header>

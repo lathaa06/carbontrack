@@ -19,23 +19,23 @@ export default function Sidebar({ isOpen }) {
 
   return (
     <>
-      <div className={`w-64 bg-[#16a34a] border-r border-[#128a3e]/30 flex flex-col h-screen fixed left-0 top-0 z-50 shadow-lg text-white transition-transform duration-300 ${
+      <div className={`w-64 bg-[var(--color-bg-secondary)] border-r border-[var(--color-border)] flex flex-col h-screen fixed left-0 top-0 z-50 shadow-lg text-[var(--color-text-primary)] transition-transform duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <div className="p-6 border-b border-[#128a3e]/50">
-          <h1 className="text-xl font-bold flex items-center gap-2 text-white font-outfit">
+        <div className="p-6 border-b border-[var(--color-border)]">
+          <h1 className="text-xl font-bold flex items-center gap-2 text-[var(--color-text-primary)] font-outfit">
             <svg viewBox="0 0 100 100" className="w-6 h-6 flex-shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 50,14 A 36,36 0 1,1 30,22" stroke="#e2f8eb" strokeWidth="7" strokeLinecap="round" />
-              <path d="M 41,6 L 54,14 L 41,22 Z" fill="#e2f8eb" />
-              <path d="M 28,34 C 20,48 24,66 38,74 C 30,64 28,50 34,36 C 35,34 32,32 28,34 Z" fill="#a7f3d0" opacity="0.8" />
-              <path d="M 37,42 C 31,54 33,68 44,74 C 38,66 36,54 41,43 C 42,41 39,40 37,42 Z" fill="#a7f3d0" opacity="0.9" />
-              <path d="M 49,75 C 44,60 47,44 57,36 C 58,48 56,62 49,75 Z" fill="#e2f8eb" />
-              <path d="M 49,75 C 56,62 58,48 57,36 C 68,40 73,53 69,67 C 66,73 58,76 49,75 Z" fill="#ffffff" />
-              <path d="M 49,75 C 53,62 55,48 57,36" stroke="#10b981" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M 50,14 A 36,36 0 1,1 30,22" stroke="var(--color-text-primary)" strokeWidth="7" strokeLinecap="round" />
+              <path d="M 41,6 L 54,14 L 41,22 Z" fill="var(--color-accent)" />
+              <path d="M 28,34 C 20,48 24,66 38,74 C 30,64 28,50 34,36 C 35,34 32,32 28,34 Z" fill="var(--color-accent-blue)" opacity="0.8" />
+              <path d="M 37,42 C 31,54 33,68 44,74 C 38,66 36,54 41,43 C 42,41 39,40 37,42 Z" fill="var(--color-accent-blue)" opacity="0.9" />
+              <path d="M 49,75 C 44,60 47,44 57,36 C 58,48 56,62 49,75 Z" fill="var(--color-accent-light)" />
+              <path d="M 49,75 C 56,62 58,48 57,36 C 68,40 73,53 69,67 C 66,73 58,76 49,75 Z" fill="var(--color-bg-card)" />
+              <path d="M 49,75 C 53,62 55,48 57,36" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             CarbonTrack
           </h1>
-          <p className="text-xs text-emerald-100/80 mt-1">Sustainability Analytics</p>
+          <p className="text-xs text-[var(--color-text-muted)] mt-1">Sustainability Analytics</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
@@ -43,8 +43,8 @@ export default function Sidebar({ isOpen }) {
             to="/dashboard" 
             className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
               isActive 
-                ? 'bg-[#064e3b] text-white shadow-inner border border-emerald-950/20' 
-                : 'text-emerald-50 hover:bg-[#128a3e] hover:text-white'
+                ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]' 
+                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
             }`}
           >
             <FiHome className="text-lg" />
@@ -54,8 +54,8 @@ export default function Sidebar({ isOpen }) {
             to="/log-activity" 
             className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
               isActive 
-                ? 'bg-[#064e3b] text-white shadow-inner border border-emerald-950/20' 
-                : 'text-emerald-50 hover:bg-[#128a3e] hover:text-white'
+                ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]' 
+                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
             }`}
           >
             <FiPlusCircle className="text-lg" />
@@ -65,8 +65,8 @@ export default function Sidebar({ isOpen }) {
             to="/goals" 
             className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
               isActive 
-                ? 'bg-[#064e3b] text-white shadow-inner border border-emerald-950/20' 
-                : 'text-emerald-50 hover:bg-[#128a3e] hover:text-white'
+                ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]' 
+                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
             }`}
           >
             <FiTarget className="text-lg" />
@@ -76,8 +76,8 @@ export default function Sidebar({ isOpen }) {
             to="/leaderboard" 
             className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
               isActive 
-                ? 'bg-[#064e3b] text-white shadow-inner border border-emerald-950/20' 
-                : 'text-emerald-50 hover:bg-[#128a3e] hover:text-white'
+                ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]' 
+                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
             }`}
           >
             <FiAward className="text-lg" />
@@ -89,8 +89,8 @@ export default function Sidebar({ isOpen }) {
               to="/organisation" 
               className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
                 isActive 
-                  ? 'bg-[#064e3b] text-white shadow-inner border border-emerald-950/20' 
-                  : 'text-emerald-50 hover:bg-[#128a3e] hover:text-white'
+                  ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]' 
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
               }`}
             >
               <FiShield className="text-lg" />
@@ -99,27 +99,10 @@ export default function Sidebar({ isOpen }) {
           )}
         </nav>
 
-        <div className="p-4 border-t border-[#128a3e]/50">
-          <div 
-            onClick={() => navigate('/profile')}
-            className="flex items-center gap-3 mb-4 px-2 hover:bg-[#128a3e]/50 p-2 rounded-xl cursor-pointer transition duration-200 border border-transparent hover:border-[#128a3e]/40 shadow-sm"
-            title="View Profile"
-          >
-            {user?.profilePhoto ? (
-              <img src={user.profilePhoto} alt={user.username} className="w-9 h-9 rounded-full object-cover border border-[#128a3e]/40" />
-            ) : (
-              <div className="w-9 h-9 rounded-full bg-[#128a3e] border border-[#0d6e30]/30 flex items-center justify-center font-bold text-white text-sm uppercase">
-                {user?.username?.substring(0, 2)}
-              </div>
-            )}
-            <div className="overflow-hidden">
-              <h4 className="text-sm font-semibold text-white truncate">{user?.username}</h4>
-              <p className="text-xs text-emerald-100/70 truncate capitalize">{user?.role?.toLowerCase()}</p>
-            </div>
-          </div>
+        <div className="p-4 border-t border-[var(--color-border)]">
           <button 
             onClick={() => setShowConfirmLogout(true)}
-            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[#128a3e]/40 text-emerald-50 hover:text-red-300 hover:bg-red-950/20 hover:border-red-900/30 transition-all font-semibold text-xs cursor-pointer bg-transparent"
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-danger)] hover:bg-red-950/20 hover:border-red-900/30 transition-all font-semibold text-xs cursor-pointer bg-transparent"
           >
             <FiLogOut />
             Logout

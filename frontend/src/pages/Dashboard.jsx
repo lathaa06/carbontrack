@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { dashboardService } from '../services/api';
+import { dashboardService, activityService } from '../services/api';
 import { toast } from 'react-toastify';
 import { 
   ResponsiveContainer, 
@@ -21,35 +21,78 @@ import {
   FiCheckCircle, 
   FiCompass, 
   FiInfo, 
-  FiSmile 
+  FiSmile,
+  FiTrash2,
+  FiRefreshCw
 } from 'react-icons/fi';
 
 const CATEGORY_COLORS = {
-  TRANSPORT: '#22c55e',
-  ELECTRICITY: '#3b82f6',
-  FOOD: '#eab308',
-  SHOPPING: '#ec4899',
+  TRANSPORT: '#10b981',
+  ELECTRICITY: '#06b6d4',
+  FOOD: '#f59e0b',
+  SHOPPING: '#ef4444',
 };
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const getLocalDateString = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+
+  const fetchDashboard = async () => {
+    try {
+      const summary = await dashboardService.getDashboard();
+      setData(summary);
+    } catch (err) {
+      toast.error('Failed to load dashboard statistics');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchDashboard() {
-      try {
-        const summary = await dashboardService.getDashboard();
-        setData(summary);
-      } catch (err) {
-        toast.error('Failed to load dashboard statistics');
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchDashboard();
   }, []);
+
+  const handleDeleteActivity = (id) => {
+    setDeleteConfirmId(id);
+  };
+
+  const executeDelete = async (id) => {
+    try {
+      await activityService.deleteActivity(id);
+      toast.success('Activity log deleted successfully!');
+      fetchDashboard();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete activity log');
+    }
+  };
+
+  const handleLogAgain = async (act) => {
+    try {
+      const payload = {
+        category: act.category,
+        activityType: act.activityType,
+        quantity: Number(act.quantity),
+        unit: act.unit,
+        logDate: getLocalDateString(),
+        notes: `Logged again from Dashboard`
+      };
+      await activityService.logActivity(payload);
+      toast.success(`Logged ${act.quantity} ${act.unit.toLowerCase()} again!`);
+      fetchDashboard();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to log activity again');
+    }
+  };
 
   if (loading) {
     return (
@@ -96,6 +139,28 @@ export default function Dashboard() {
     };
   });
 
+  // Calculate goal projection if activeGoal exists
+  let projectionData = null;
+  let dailyAllowed = 0;
+  let currentDailyAvg = 0;
+  let requiredDailyReduction = 0;
+  if (data.activeGoal) {
+    const goal = data.activeGoal;
+    const start = new Date(goal.startDate);
+    const today = new Date();
+    const daysElapsed = Math.max(1, Math.ceil((today - start) / (1000 * 60 * 60 * 24)));
+    
+    dailyAllowed = (goal.targetCo2e / goal.periodDays);
+    currentDailyAvg = (goal.currentCo2e / daysElapsed);
+    requiredDailyReduction = Math.max(0, currentDailyAvg - dailyAllowed);
+
+    projectionData = [
+      { name: 'Start', 'Target Limit': 0, 'Actual Footprint': 0, 'Projected': 0 },
+      { name: 'Today', 'Target Limit': Math.round(dailyAllowed * daysElapsed), 'Actual Footprint': goal.currentCo2e, 'Projected': goal.currentCo2e },
+      { name: 'End Goal', 'Target Limit': goal.targetCo2e, 'Actual Footprint': null, 'Projected': Math.round(currentDailyAvg * goal.periodDays) }
+    ];
+  }
+
   return (
     <div className="space-y-8 fade-in">
       {/* Top Cards Grid */}
@@ -112,7 +177,7 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card relative overflow-hidden">
-          <div className="absolute top-4 right-4 p-2 bg-blue-50 border border-blue-100 rounded-lg text-blue-600">
+          <div className="absolute top-4 right-4 p-2 bg-[rgba(6,182,212,0.1)] border border-[rgba(6,182,212,0.2)] rounded-lg text-[var(--color-accent-blue)]">
             <FiCalendar className="text-lg" />
           </div>
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Weekly Footprint</h4>
@@ -123,7 +188,7 @@ export default function Dashboard() {
         </div>
 
         <div className="stat-card relative overflow-hidden">
-          <div className="absolute top-4 right-4 p-2 bg-purple-50 border border-purple-100 rounded-lg text-purple-600">
+          <div className="absolute top-4 right-4 p-2 bg-[rgba(245,158,11,0.1)] border border-[rgba(245,158,11,0.2)] rounded-lg text-[var(--color-warning)]">
             <FiCompass className="text-lg" />
           </div>
           <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Monthly Footprint</h4>
@@ -151,7 +216,7 @@ export default function Dashboard() {
                 />
                 <Legend />
                 <Line type="monotone" dataKey="This Week" stroke="var(--color-accent)" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                <Line type="monotone" dataKey="Last Week" stroke="#a3b5a8" strokeDasharray="5 5" strokeWidth={1.5} dot={{ r: 2 }} />
+                <Line type="monotone" dataKey="Last Week" stroke="var(--color-text-muted)" strokeDasharray="5 5" strokeWidth={1.5} dot={{ r: 2 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -221,6 +286,43 @@ export default function Dashboard() {
                   </span>
                 </div>
 
+                {/* Calculations Row */}
+                <div className="grid grid-cols-3 gap-2 py-3 border-t border-b border-[var(--color-border)]/50 text-[10px]">
+                  <div>
+                    <span className="text-[var(--color-text-muted)] block uppercase font-bold tracking-wider">Daily Budget</span>
+                    <span className="font-bold text-xs text-[var(--color-text-primary)]">{dailyAllowed.toFixed(1)} kg</span>
+                  </div>
+                  <div>
+                    <span className="text-[var(--color-text-muted)] block uppercase font-bold tracking-wider">Daily Average</span>
+                    <span className="font-bold text-xs text-[var(--color-text-primary)]">{currentDailyAvg.toFixed(1)} kg</span>
+                  </div>
+                  <div>
+                    <span className="text-[var(--color-text-muted)] block uppercase font-bold tracking-wider">Red. Required</span>
+                    <span className={`font-bold text-xs ${requiredDailyReduction > 0 ? 'text-[var(--color-danger)]' : 'text-[var(--color-accent)]'}`}>
+                      {requiredDailyReduction > 0 ? `${requiredDailyReduction.toFixed(1)} kg/d` : '0 kg/d'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Timeline Projection Chart */}
+                <div className="pt-2">
+                  <h4 className="text-[9px] uppercase font-bold tracking-wider text-[var(--color-text-muted)] mb-2">Footprint Projection Timeline</h4>
+                  <div className="h-40 bg-[var(--color-bg-primary)]/50 border border-[var(--color-border)]/50 rounded-xl p-2">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={projectionData}>
+                        <CartesianGrid stroke="rgba(0,0,0,0.03)" vertical={false} />
+                        <XAxis dataKey="name" fontSize={9} stroke="var(--color-text-muted)" />
+                        <YAxis fontSize={9} stroke="var(--color-text-muted)" />
+                        <Tooltip />
+                        <Legend wrapperStyle={{ fontSize: 9 }} />
+                        <Line name="Target Bound" type="monotone" dataKey="Target Limit" stroke="#94a3b8" strokeWidth={1.5} strokeDasharray="3 3" dot={{ r: 2 }} />
+                        <Line name="Actual Footprint" type="monotone" dataKey="Actual Footprint" stroke="var(--color-accent)" strokeWidth={2.5} dot={{ r: 3 }} />
+                        <Line name="Projected Path" type="monotone" dataKey="Projected" stroke={requiredDailyReduction > 0 ? "var(--color-danger)" : "var(--color-accent-blue)"} strokeWidth={1.5} strokeDasharray="5 5" dot={{ r: 2 }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
                 <div className="p-3 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded-lg flex gap-2.5 items-start mt-2">
                   {data.activeGoal.trajectoryStatus === 'ON_TRACK' 
                     ? <FiCheckCircle className="text-emerald-400 mt-0.5 shrink-0" />
@@ -285,24 +387,43 @@ export default function Dashboard() {
                   <th className="py-2.5">Activity Type</th>
                   <th className="py-2.5">Qty</th>
                   <th className="py-2.5 text-right">CO₂ Emission</th>
+                  <th className="py-2.5 text-center w-10"></th>
                 </tr>
               </thead>
               <tbody>
                 {data.recentActivities.length > 0 ? (
                   data.recentActivities.map((act) => (
-                    <tr key={act.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors">
+                    <tr key={act.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors group">
                       <td className="py-3 text-[var(--color-text-secondary)]">{act.logDate}</td>
                       <td className="py-3">
                         <span className="capitalize">{act.category.toLowerCase()}</span>
                       </td>
                       <td className="py-3 text-[var(--color-text-secondary)] font-semibold">{act.activityType}</td>
                       <td className="py-3 text-[var(--color-text-secondary)]">{act.quantity} {act.unit}</td>
-                      <td className="py-3 text-right text-[var(--color-accent-light)] font-bold">{act.co2eKg} kg</td>
+                      <td className="py-3 text-right text-[var(--color-accent-muted)] font-bold">{act.co2eKg} kg</td>
+                      <td className="py-3 text-center">
+                        <div className="flex justify-center gap-1.5">
+                          <button
+                            onClick={() => handleLogAgain(act)}
+                            className="text-slate-400 hover:text-[var(--color-accent)] opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-1 flex items-center justify-center"
+                            title="Log this again"
+                          >
+                            <FiRefreshCw className="text-[10px]" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteActivity(act.id)}
+                            className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-1 flex items-center justify-center"
+                            title="Delete activity log"
+                          >
+                            <FiTrash2 className="text-xs" />
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="py-6 text-center text-[var(--color-text-muted)]">
+                    <td colSpan="6" className="py-6 text-center text-[var(--color-text-muted)]">
                       No activities logged recently.
                     </td>
                   </tr>
@@ -312,6 +433,38 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Custom Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white border border-slate-100 rounded-2xl p-6 max-w-sm w-full shadow-2xl flex flex-col items-center text-center animate-scale-up">
+            <div className="w-12 h-12 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-4 text-xl">
+              <FiTrash2 />
+            </div>
+            <h4 className="font-bold text-base text-[var(--color-text-primary)] mb-2 font-outfit">Delete Activity Log</h4>
+            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mb-6">
+              Are you sure you want to delete this activity log? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 w-full">
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                className="flex-grow py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  executeDelete(deleteConfirmId);
+                  setDeleteConfirmId(null);
+                }}
+                className="flex-grow py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-xs font-bold transition shadow-md shadow-red-500/10 cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

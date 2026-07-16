@@ -61,6 +61,9 @@ public class User {
     @Column(name = "profile_photo", columnDefinition = "TEXT")
     private String profilePhoto;
 
+    @Column(name = "selected_badge", length = 50)
+    private String selectedBadge;
+
     @Column(nullable = false)
     @Builder.Default
     private boolean enabled = true;
