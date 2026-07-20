@@ -34,7 +34,7 @@ public class AnalyticsService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "analytics", key = "#userId")
+    //@Cacheable(value = "analytics", key = "#userId")
     public DashboardSummary getDashboardSummary(Long userId) {
         LocalDate today = LocalDate.now();
         LocalDate sevenDaysAgo = today.minusDays(6);
@@ -91,6 +91,8 @@ public class AnalyticsService {
 
         // 5. Recommendations
         List<String> recommendations = recommendationService.getPersonalizedRecommendations(userId);
+        //List<String> recommendations = List.of();
+
 
         // 6. Peer Benchmarking Percentile
         List<Object[]> userTotals = activityLogRepository.getUserTotalEmissions(thirtyDaysAgo);
@@ -126,6 +128,8 @@ public class AnalyticsService {
 
         // 8. Active Goal
         DashboardSummary.ActiveGoalProgress activeGoal = goalService.getActiveGoalProgress(userId);
+       // DashboardSummary.ActiveGoalProgress activeGoal = null;
+
 
         return new DashboardSummary(
                 todayCo2e,

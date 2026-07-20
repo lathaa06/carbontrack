@@ -320,7 +320,7 @@ export default function LogActivity() {
                   <label className="label">Quantity</label>
                   <div className="relative">
                     <input 
-                      type="number" 
+                      type="number"
                       step="any"
                       placeholder="0.00" 
                       className="input-field pr-16"

@@ -30,9 +30,19 @@ public class ActivityController {
     }
 
     @PostMapping
-    public ResponseEntity<ActivityLogResponse> logActivity(@AuthenticationPrincipal UserPrincipal principal,
-                                                             @Valid @RequestBody ActivityLogRequest request) {
-        ActivityLogResponse response = activityLogService.logActivity(principal.getId(), request);
+    public ResponseEntity<?> logActivity(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @Valid @RequestBody ActivityLogRequest request) {
+
+        System.out.println("Principal = " + principal);
+
+        if (principal == null) {
+            return ResponseEntity.status(500).body("Principal is NULL");
+        }
+
+        ActivityLogResponse response =
+                activityLogService.logActivity(principal.getId(), request);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -1,5 +1,7 @@
 package com.team7.carbontrack.exception;
 
+import java.util.Map;
+import java.util.HashMap;
 import com.team7.carbontrack.dto.ApiErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -67,10 +69,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
-        ex.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiErrorResponse.of(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error",
-                "An unexpected error occurred", List.of()));
+    public ResponseEntity<Map<String, Object>> handleException(Exception ex) {
+
+        ex.printStackTrace();   // VERY IMPORTANT
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        body.put("exception", ex.getClass().getName());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(body);
     }
 }
