@@ -32,7 +32,7 @@ public class GoalService {
     }
 
     @Transactional
-    @CacheEvict(value = "analytics", key = "#userId")
+    @CacheEvict(value = "dashboardSummary", key = "#userId + ':' + T(java.time.LocalDate).now()")
     public Goal createGoal(Long userId, BigDecimal targetReductionPct, Integer periodDays) {
         // Deactivate existing active goals
         List<Goal> activeGoals = goalRepository.findByUserIdAndStatus(userId, GoalStatus.ACTIVE);

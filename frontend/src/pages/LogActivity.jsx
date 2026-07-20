@@ -36,7 +36,7 @@ export default function LogActivity() {
     defaultValues: {
       category: 'TRANSPORT',
       activityType: '',
-      quantity: '',
+      quantity: 0,
       unit: '',
       logDate: getLocalDateString(),
       notes: '',
@@ -221,7 +221,7 @@ export default function LogActivity() {
       reset({
         category: activeCategory,
         activityType: Object.keys(EMISSION_FACTORS[activeCategory])[0] || '',
-        quantity: '',
+        quantity: 0,
         unit: EMISSION_FACTORS[activeCategory][Object.keys(EMISSION_FACTORS[activeCategory])[0]]?.unit || '',
         logDate: getLocalDateString(),
         notes: '',
@@ -321,12 +321,19 @@ export default function LogActivity() {
                   <div className="relative">
                     <input 
                       type="number"
-                      step="any"
-                      placeholder="0.00" 
+                      min="0"
+                      step="0.0001"
+                      inputMode="decimal"
+                      placeholder="0.00"
                       className="input-field pr-16"
+                      onKeyDown={(event) => {
+                        if (['-', '+', 'e', 'E'].includes(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       {...register('quantity', { 
                         required: 'Quantity is required',
-                        min: { value: 0.0001, message: 'Quantity must be greater than zero' }
+                        min: { value: 0, message: 'Quantity cannot be negative' }
                       })}
                     />
                     <span className="absolute right-3 top-3 text-xs font-semibold text-[var(--color-text-secondary)]">

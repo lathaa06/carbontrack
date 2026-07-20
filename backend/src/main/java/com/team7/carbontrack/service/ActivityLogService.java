@@ -26,7 +26,7 @@ public class ActivityLogService {
     }
 
     @Transactional
-    @org.springframework.cache.annotation.CacheEvict(value = "analytics", key = "#userId")
+    @org.springframework.cache.annotation.CacheEvict(value = "dashboardSummary", allEntries = true)
     public ActivityLogResponse logActivity(Long userId, ActivityLogRequest request) {
         // Step 1: ask the calculation engine "how much CO2e is this?"
         EmissionCalculationService.CalculationResult result = emissionCalculationService.calculate(
@@ -69,7 +69,7 @@ public class ActivityLogService {
     }
 
     @Transactional
-    @org.springframework.cache.annotation.CacheEvict(value = "analytics", key = "#userId")
+    @org.springframework.cache.annotation.CacheEvict(value = "dashboardSummary", allEntries = true)
     public void deleteActivityLog(Long userId, Long logId) {
         ActivityLog log = activityLogRepository.findById(logId)
                 .orElseThrow(() -> new ResourceNotFoundException("Activity log not found: " + logId));

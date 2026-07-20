@@ -34,7 +34,11 @@ public class AnalyticsService {
     }
 
     @Transactional(readOnly = true)
-    //@Cacheable(value = "analytics", key = "#userId")
+    @Cacheable(
+            value = "dashboardSummary",
+            key = "#userId + ':' + T(java.time.LocalDate).now()",
+            sync = true
+    )
     public DashboardSummary getDashboardSummary(Long userId) {
         LocalDate today = LocalDate.now();
         LocalDate sevenDaysAgo = today.minusDays(6);

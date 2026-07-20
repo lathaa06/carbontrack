@@ -108,6 +108,14 @@ carbontrack/
 
 ### Step 1: Run the Backend
 
+For Redis-backed dashboard caching, start the included Redis service in a second terminal:
+
+```powershell
+docker compose up -d redis
+```
+
+Redis is available on `localhost:6379` by default. Override this with `REDIS_HOST` and `REDIS_PORT` when required.
+
 By default, the backend runs in a **`local` development profile** which uses an **in-memory H2 database**. It will automatically spin up, generate the schema from JPA definitions, and seed it with dummy emission factors and test badges using `dev-data.sql`. No PostgreSQL installation is required for local testing!
 
 1.  Navigate to the backend directory:
@@ -162,6 +170,8 @@ To connect to a live environment (e.g. PostgreSQL in production or staging) inst
 | `DB_NAME` | Database name | `carbontrack` |
 | `DB_USERNAME` | Database username | `carbontrack` |
 | `DB_PASSWORD` | Database password | `carbontrack` |
+| `REDIS_HOST` | Redis hostname for dashboard caches | `localhost` |
+| `REDIS_PORT` | Redis port for dashboard caches | `6379` |
 | `JWT_SECRET` | HMAC-SHA256 Base64-encoded secret for signing tokens | *Default dev secret* |
 | `SERVER_PORT` | Port for the backend API | `8081` |
 | `GOOGLE_CLIENT_ID` | OAuth2 Google registration client identifier | *Blank (disabled)* |

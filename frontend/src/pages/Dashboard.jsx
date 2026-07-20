@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { dashboardService, activityService } from '../services/api';
 import { toast } from 'react-toastify';
 import { 
@@ -23,8 +24,10 @@ import {
   FiInfo, 
   FiSmile,
   FiTrash2,
-  FiRefreshCw
+  FiRefreshCw,
+  FiArrowRight
 } from 'react-icons/fi';
+import EcoPulse from '../components/EcoPulse';
 
 const CATEGORY_COLORS = {
   TRANSPORT: '#10b981',
@@ -96,7 +99,12 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
+      <div className="space-y-6">
+        <div className="flex flex-col items-center justify-center py-4 text-center">
+          <EcoPulse className="h-20 w-20" />
+          <p className="-mt-2 text-xs font-medium text-[var(--color-text-muted)]">Gathering your sustainability insights…</p>
+        </div>
+        <div className="animate-pulse space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-32 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl"></div>
@@ -106,6 +114,7 @@ export default function Dashboard() {
           <div className="h-80 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl"></div>
           <div className="h-80 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl"></div>
         </div>
+        </div>
       </div>
     );
   }
@@ -113,7 +122,7 @@ export default function Dashboard() {
   if (!data) {
     return (
       <div className="glass-card p-12 text-center flex flex-col items-center justify-center">
-        <FiAlertCircle className="text-4xl text-red-400 mb-4" />
+        <EcoPulse className="h-24 w-24" />
         <h3 className="text-lg font-semibold">No data available</h3>
         <p className="text-sm text-[var(--color-text-secondary)] mt-1">Start by logging your carbon activities.</p>
       </div>
@@ -163,6 +172,24 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 fade-in">
+      <section className="dashboard-hero overflow-hidden p-6 md:p-8">
+        <div className="relative z-10 max-w-2xl">
+          <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-100">
+            <span className="pulse-dot bg-emerald-200" /> Your carbon pulse
+          </p>
+          <h1 className="font-outfit text-2xl font-extrabold tracking-tight text-white md:text-3xl">
+            Small choices, measurable impact.
+          </h1>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-emerald-50/90">
+            You have logged {data.monthlyCo2e} kg CO₂e in the last 30 days. Keep building a clearer picture of your footprint.
+          </p>
+          <Link to="/log-activity" className="hero-action mt-5 inline-flex items-center gap-2">
+            Log an activity <FiArrowRight />
+          </Link>
+        </div>
+        <EcoPulse className="absolute -right-3 -bottom-9 h-44 w-44 opacity-80 md:right-8" />
+      </section>
+
       {/* Top Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="stat-card relative overflow-hidden">

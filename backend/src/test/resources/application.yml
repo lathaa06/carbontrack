@@ -12,6 +12,8 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
+  cache:
+    type: simple
 
 app:
   jwt:
