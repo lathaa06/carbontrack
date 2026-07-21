@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.team7.carbontrack.entity.UserStreak;
+import com.team7.carbontrack.repository.UserStreakRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,13 +26,16 @@ public class AnalyticsService {
     private final ActivityLogRepository activityLogRepository;
     private final RecommendationService recommendationService;
     private final GoalService goalService;
+    private final UserStreakRepository userStreakRepository;
 
     public AnalyticsService(ActivityLogRepository activityLogRepository,
                             RecommendationService recommendationService,
-                            GoalService goalService) {
+                            GoalService goalService,
+                            UserStreakRepository userStreakRepository) {
         this.activityLogRepository = activityLogRepository;
         this.recommendationService = recommendationService;
         this.goalService = goalService;
+        this.userStreakRepository = userStreakRepository;
     }
 
     @Transactional(readOnly = true)
@@ -134,11 +139,21 @@ public class AnalyticsService {
         DashboardSummary.ActiveGoalProgress activeGoal = goalService.getActiveGoalProgress(userId);
        // DashboardSummary.ActiveGoalProgress activeGoal = null;
 
+        UserStreak streak = userStreakRepository.findById(userId)
+                .orElse(null);
+
+        Integer currentStreak = (streak != null) ? streak.getCurrentStreak() : 0;
+        Integer longestStreak = (streak != null) ? streak.getLongestStreak() : 0;
+
 
         return new DashboardSummary(
                 todayCo2e,
                 weeklyCo2e,
                 monthlyCo2e,
+
+                currentStreak,
+                longestStreak,
+
                 completeBreakdown,
                 thisWeekTrend,
                 lastWeekTrend,

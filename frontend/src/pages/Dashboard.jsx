@@ -20,7 +20,8 @@ import {
   FiAlertCircle, 
   FiCalendar, 
   FiCheckCircle, 
-  FiCompass, 
+  FiCompass,
+  FiZap,
   FiInfo, 
   FiSmile,
   FiTrash2,
@@ -105,7 +106,7 @@ export default function Dashboard() {
           <p className="-mt-2 text-xs font-medium text-[var(--color-text-muted)]">Gathering your sustainability insights…</p>
         </div>
         <div className="animate-pulse space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-32 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl"></div>
           ))}
@@ -191,7 +192,7 @@ export default function Dashboard() {
       </section>
 
       {/* Top Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         <div className="stat-card relative overflow-hidden">
           <div className="absolute top-4 right-4 p-2 bg-[var(--color-accent-dim)] rounded-lg text-[var(--color-accent)]">
             <FiActivity className="text-lg" />
@@ -223,6 +224,28 @@ export default function Dashboard() {
             {data.monthlyCo2e} <span className="text-sm font-medium text-[var(--color-text-secondary)]">kg CO₂e</span>
           </h2>
           <p className="text-xs text-[var(--color-text-secondary)] mt-2">Last 30 days cumulative</p>
+        </div>
+
+
+        <div className="stat-card relative overflow-hidden">
+          <div className="absolute top-4 right-4 p-2 bg-orange-100 border border-orange-200 rounded-lg text-orange-500">
+            <FiZap className="text-lg" />
+          </div>
+
+          <h4 className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">
+            Current Streak
+          </h4>
+
+          <h2 className="text-3xl font-bold font-outfit mt-2 text-orange-500">
+            🔥 {data.currentStreak}
+            <span className="text-sm font-medium text-[var(--color-text-secondary)]">
+              {" "}Days
+            </span>
+          </h2>
+
+          <p className="text-xs text-[var(--color-text-secondary)] mt-2">
+            Best Streak: {data.longestStreak} Days
+          </p>
         </div>
       </div>
 

@@ -9,6 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.team7.carbontrack.entity.User;
+import com.team7.carbontrack.entity.UserStreak;
+import com.team7.carbontrack.repository.UserRepository;
+import com.team7.carbontrack.repository.UserStreakRepository;
+
+import java.time.LocalDate;
 
 @Service
 public class ActivityLogService {
@@ -16,13 +22,19 @@ public class ActivityLogService {
     private final ActivityLogRepository activityLogRepository;
     private final EmissionCalculationService emissionCalculationService;
     private final org.springframework.context.ApplicationEventPublisher eventPublisher;
-
+    private final UserRepository userRepository;
+    private final UserStreakRepository userStreakRepository;
     public ActivityLogService(ActivityLogRepository activityLogRepository,
                               EmissionCalculationService emissionCalculationService,
-                              org.springframework.context.ApplicationEventPublisher eventPublisher) {
+                              org.springframework.context.ApplicationEventPublisher eventPublisher,
+                              UserRepository userRepository,
+                              UserStreakRepository userStreakRepository) {
+
         this.activityLogRepository = activityLogRepository;
         this.emissionCalculationService = emissionCalculationService;
         this.eventPublisher = eventPublisher;
+        this.userRepository = userRepository;
+        this.userStreakRepository = userStreakRepository;
     }
 
     @Transactional
@@ -46,6 +58,8 @@ public class ActivityLogService {
                 .build();
 
         ActivityLog saved = activityLogRepository.save(log);
+        // Update user's streak
+        updateUserStreak(userId, saved.getLogDate());
         eventPublisher.publishEvent(new ActivityLoggedEvent(this, userId, saved));
         return ActivityLogResponse.from(saved);
     }
@@ -78,5 +92,62 @@ public class ActivityLogService {
             throw new ResourceNotFoundException("Activity log not found: " + logId);
         }
         activityLogRepository.delete(log);
+    }
+    private void updateUserStreak(Long userId, java.time.LocalDate activityDate) {
+
+        // Ensure the user exists
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found: " + userId));
+
+        UserStreak streak = userStreakRepository.findById(userId)
+                .orElse(
+                        UserStreak.builder()
+                                .userId(userId)
+                                .currentStreak(0)
+                                .longestStreak(0)
+                                .build()
+                );
+
+        LocalDate lastDate = streak.getLastActivityDate();
+
+        // First activity ever
+        if (lastDate == null) {
+
+            streak.setCurrentStreak(1);
+            streak.setLongestStreak(1);
+
+        }
+
+        // Already logged today
+        else if (lastDate.equals(activityDate)) {
+
+            return;
+
+        }
+
+        // Yesterday
+        else if (lastDate.plusDays(1).equals(activityDate)) {
+
+            streak.setCurrentStreak(streak.getCurrentStreak() + 1);
+
+            if (streak.getCurrentStreak() > streak.getLongestStreak()) {
+
+                streak.setLongestStreak(streak.getCurrentStreak());
+
+            }
+
+        }
+
+        // Missed one or more days
+        else {
+
+            streak.setCurrentStreak(1);
+
+        }
+
+        streak.setLastActivityDate(activityDate);
+
+        userStreakRepository.save(streak);
     }
 }
