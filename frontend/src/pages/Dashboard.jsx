@@ -247,7 +247,7 @@ export default function Dashboard() {
 
 
         <div className="stat-card relative overflow-hidden">
-          <div className="absolute top-4 right-4 p-2 bg-orange-100 border border-orange-200 rounded-lg text-orange-500">
+          <div className="absolute top-4 right-4 p-2 rounded-lg border border-[rgba(249,115,22,.25)] bg-[rgba(249,115,22,.12)] text-orange-400">
             <FiZap className="text-lg" />
           </div>
 
@@ -522,7 +522,7 @@ export default function Dashboard() {
       {/* Custom Confirmation Modal */}
       {deleteConfirmId && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 max-w-sm w-full shadow-2xl flex flex-col items-center text-center animate-scale-up">
+          <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-6 max-w-sm w-full shadow-2xl flex flex-col items-center text-center animate-scale-up">
             <div className="w-12 h-12 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-4 text-xl">
               <FiTrash2 />
             </div>
@@ -533,7 +533,7 @@ export default function Dashboard() {
             <div className="flex gap-3 w-full">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="flex-grow py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                className="flex-grow py-2.5 bg-[var(--color-bg-card-hover)] hover:bg-[var(--color-border)] text-[var(--color-text-primary)] rounded-xl text-xs font-bold transition cursor-pointer"
               >
                 Cancel
               </button>

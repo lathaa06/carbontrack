@@ -52,14 +52,17 @@
 }
 
 @layer components {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 16px;
-    backdrop-filter: blur(12px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-  }
+    .glass-card {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        backdrop-filter: blur(14px);
+        transition: all .3s ease;
+
+        box-shadow:
+            0 10px 25px rgba(0,0,0,.06);
+    }
+
 
   .app-shell {
     position: relative;
@@ -95,6 +98,7 @@
     animation: gridDrift 16s linear infinite;
   }
 
+
   .motion-orb, .motion-ring {
     position: absolute;
     border-radius: 999px;
@@ -102,7 +106,9 @@
     will-change: transform;
   }
 
+
   .motion-orb { opacity: 0.28; mix-blend-mode: multiply; }
+
   .motion-orb-emerald { width: 26rem; height: 26rem; top: 9%; right: -7rem; background: radial-gradient(circle at 35% 35%, #a7f3d0, #10b981 42%, transparent 70%); animation: orbFloatOne 14s ease-in-out infinite; }
   .motion-orb-cyan { width: 22rem; height: 22rem; bottom: 2%; left: 8%; background: radial-gradient(circle at 45% 45%, #a5f3fc, #22d3ee 42%, transparent 70%); animation: orbFloatTwo 18s ease-in-out infinite; }
   .motion-orb-lime { width: 16rem; height: 16rem; top: 42%; left: 45%; opacity: 0.16; background: radial-gradient(circle, #d9f99d, #84cc16 45%, transparent 70%); animation: orbFloatThree 12s ease-in-out infinite; }
@@ -202,10 +208,14 @@
   }
 
   .glass-card:hover {
-    border-color: rgba(16, 185, 129, 0.2);
-    background: rgba(255, 255, 255, 0.95);
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.08);
+     background: var(--color-bg-card-hover);
+
+        border-color: var(--color-border-hover);
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 18px 35px rgba(0,0,0,.12);
   }
 
   .btn-primary {
@@ -287,18 +297,29 @@
   }
 
   .stat-card {
-    background: #ffffff;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    background: var(--color-bg-card);
+
+        border:1px solid var(--color-border);
+
+        border-radius:16px;
+
+        padding:1.5rem;
+
+        transition:.3s;
+
+        box-shadow:
+            0 10px 25px rgba(0,0,0,.05);
   }
 
   .stat-card:hover {
-    border-color: rgba(16, 185, 129, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.08);
+      background:var(--color-bg-card-hover);
+
+       border-color:var(--color-border-hover);
+
+       transform:translateY(-2px);
+
+       box-shadow:
+           0 20px 35px rgba(0,0,0,.14);
   }
 
   .badge {

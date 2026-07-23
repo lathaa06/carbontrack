@@ -1,12 +1,16 @@
 import { useAuth } from '../context/AuthContext';
 import { profileService } from '../services/api';
 import { toast } from 'react-toastify';
-import { FiGlobe, FiMenu } from 'react-icons/fi';
+import { FiGlobe, FiMenu, FiMoon, FiSun } from 'react-icons/fi';
+
+import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ title, sidebarOpen, onToggleSidebar }) {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
+
+  const { theme, toggleTheme } = useTheme();
 
   const handleUnitSystemChange = async (e) => {
     const newSystem = e.target.value;
@@ -36,6 +40,18 @@ export default function Navbar({ title, sidebarOpen, onToggleSidebar }) {
       </div>
       
       <div className="flex items-center gap-4">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            className="w-10 h-10 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-card)] hover:bg-[var(--color-bg-card-hover)] flex items-center justify-center transition duration-300 cursor-pointer"
+          >
+            {theme === "light" ? (
+              <FiMoon className="text-lg text-[var(--color-text-primary)]" />
+            ) : (
+              <FiSun className="text-lg text-yellow-400" />
+            )}
+          </button>
         {/* Interactive Unit Selector */}
         <div className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] font-semibold hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-primary)] transition">
           <FiGlobe className="text-[var(--color-accent-blue)]" />
