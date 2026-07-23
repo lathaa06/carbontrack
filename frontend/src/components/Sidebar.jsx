@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LuSprout } from 'react-icons/lu';
+import Lottie from "lottie-react";
+import globeAnimation from "../assets/globe-animation.json";
 import { 
   FiHome, 
   FiPlusCircle, 
@@ -98,6 +100,33 @@ export default function Sidebar({ isOpen }) {
             </NavLink>
           )}
         </nav>
+
+       {/* Sidebar Footer Animation */}
+
+        <div className="mt-auto px-4 pb-4">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] p-3 shadow-sm">
+                <Lottie
+                    animationData={globeAnimation}
+                    loop
+                    autoplay
+                    style={{
+                        width: 120,
+                        height: 120,
+                        margin: "0 auto"
+                    }}
+                />
+
+                <div className="mt-2 text-center">
+                  <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                    Every Action Counts
+                  </p>
+
+                  <p className="text-[11px] text-[var(--color-text-secondary)]">
+                    Reduce • Reuse • Restore
+                  </p>
+                </div>
+            </div>
+        </div>
 
         <div className="p-4 border-t border-[var(--color-border)]">
           <button 
