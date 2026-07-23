@@ -9,6 +9,7 @@ import com.team7.carbontrack.entity.AuthProvider;
 import com.team7.carbontrack.entity.User;
 import com.team7.carbontrack.exception.DuplicateResourceException;
 import com.team7.carbontrack.exception.InvalidCredentialsException;
+import com.team7.carbontrack.exception.ResourceNotFoundException;
 import com.team7.carbontrack.repository.UserRepository;
 import com.team7.carbontrack.security.JwtService;
 import com.team7.carbontrack.security.UserPrincipal;
@@ -43,11 +44,16 @@ public class AuthService {
             throw new DuplicateResourceException("An account with this email already exists");
         }
 
+        if (request.referrerId() != null && !userRepository.existsById(request.referrerId())) {
+            throw new ResourceNotFoundException("The invitation link is no longer valid");
+        }
+
         User user = User.builder()
                 .username(request.username())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password())) // never store plain text
                 .authProvider(AuthProvider.LOCAL)
+                .referredByUserId(request.referrerId())
                 .build();
 
         User saved = userRepository.save(user);

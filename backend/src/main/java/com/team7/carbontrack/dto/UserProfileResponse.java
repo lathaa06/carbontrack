@@ -1,6 +1,7 @@
 package com.team7.carbontrack.dto;
 
 import com.team7.carbontrack.entity.GoalVisibility;
+import com.team7.carbontrack.entity.AuthProvider;
 import com.team7.carbontrack.entity.Role;
 import com.team7.carbontrack.entity.UnitSystem;
 import com.team7.carbontrack.entity.User;
@@ -12,6 +13,7 @@ public record UserProfileResponse(
         String username,
         String email,
         Role role,
+        AuthProvider authProvider,
         Long orgId,
         UnitSystem preferredUnitSystem,
         GoalVisibility goalVisibility,
@@ -30,6 +32,7 @@ public record UserProfileResponse(
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole(),
+                user.getAuthProvider(),
                 user.getOrgId(),
                 user.getPreferredUnitSystem(),
                 user.getGoalVisibility(),

@@ -24,6 +24,9 @@ import {
   FiZap,
   FiInfo, 
   FiSmile,
+  FiCpu,
+  FiCheck,
+  FiTrendingDown,
   FiTrash2,
   FiRefreshCw,
   FiArrowRight
@@ -50,6 +53,7 @@ export default function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+  const [completedTips, setCompletedTips] = useState([]);
 
   const fetchDashboard = async () => {
     try {
@@ -174,6 +178,16 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 fade-in">
       <section className="dashboard-hero overflow-hidden p-6 md:p-8">
+        <video
+          className="dashboard-hero-video"
+          src="/windmill.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+        />
+        <div className="dashboard-hero-shade" aria-hidden="true" />
         <div className="relative z-10 max-w-2xl">
           <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-100">
             <span className="pulse-dot bg-emerald-200" /> Your carbon pulse
@@ -188,7 +202,12 @@ export default function Dashboard() {
             Log an activity <FiArrowRight />
           </Link>
         </div>
-        <EcoPulse className="absolute -right-3 -bottom-9 h-44 w-44 opacity-80 md:right-8" />
+        <div className="relative z-10 mt-6 grid max-w-xl grid-cols-3 gap-2 text-center md:absolute md:bottom-7 md:right-36 md:mt-0">
+          <div className="dashboard-mini-stat"><strong>{data.currentStreak}</strong><span>day streak</span></div>
+          <div className="dashboard-mini-stat"><strong>{data.percentileRank}%</strong><span>peer rank</span></div>
+          <div className="dashboard-mini-stat"><strong>{data.recommendationInsights?.length || 0}</strong><span>next actions</span></div>
+        </div>
+        <EcoPulse className="dashboard-pulse absolute -right-3 -bottom-9 h-44 w-44 opacity-80 md:right-8" />
       </section>
 
       {/* Top Cards Grid */}
@@ -409,16 +428,32 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Recommendations & Recent Activities Grid */}
+      {/* Personalised recommendation engine & recent activities */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recommendations */}
-        <div className="glass-card p-6 flex flex-col justify-between">
+        <div className="glass-card insight-panel p-6 flex flex-col justify-between">
           <div>
-            <h3 className="text-sm font-bold tracking-wide uppercase text-[var(--color-text-secondary)] mb-4">Tailored Eco Tips</h3>
-            <div className="space-y-4">
-              {data.recommendations.map((tip, idx) => (
-                <div key={idx} className="p-3 bg-[var(--color-bg-primary)] border-l-2 border-[var(--color-accent)] rounded-r-lg">
-                  <p className="text-[11px] text-[var(--color-text-secondary)] leading-relaxed">{tip}</p>
+            <div className="mb-5 flex items-start justify-between gap-3">
+              <div>
+                <p className="mb-1 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-emerald-700"><FiCpu /> Smart weekly plan</p>
+                <h3 className="text-base font-bold font-outfit text-[var(--color-text-primary)]">Your highest-impact moves</h3>
+              </div>
+              <FiTrendingDown className="text-2xl text-emerald-500" />
+            </div>
+            <div className="space-y-3">
+              {(data.recommendationInsights || []).map((insight, idx) => (
+                <div key={insight.activityType} className={`insight-card ${completedTips.includes(idx) ? 'is-complete' : ''}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="text-xs font-bold text-[var(--color-text-primary)]">{insight.title}</p>
+                      <p className="mt-1 text-[10px] font-semibold text-emerald-700">{insight.action}</p>
+                    </div>
+                    {insight.potentialMonthlySaving > 0 && <span className="insight-saving">−{insight.potentialMonthlySaving} kg</span>}
+                  </div>
+                  <p className="mt-2 text-[11px] leading-relaxed text-[var(--color-text-secondary)]">{insight.rationale}</p>
+                  <button onClick={() => setCompletedTips((items) => items.includes(idx) ? items.filter((item) => item !== idx) : [...items, idx])} className="insight-action">
+                    <FiCheck /> {completedTips.includes(idx) ? 'Added to your plan' : 'Add to my plan'}
+                  </button>
                 </div>
               ))}
             </div>

@@ -38,6 +38,11 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
            "GROUP BY al.activityType ORDER BY SUM(al.co2eKg) DESC")
     List<String> findTopActivitiesByEmission(Long userId, LocalDate startDate, Pageable pageable);
 
+    @Query("SELECT al.activityType, SUM(al.co2eKg) FROM ActivityLog al " +
+           "WHERE al.userId = :userId AND al.logDate >= :startDate " +
+           "GROUP BY al.activityType ORDER BY SUM(al.co2eKg) DESC")
+    List<Object[]> findTopActivityImpacts(Long userId, LocalDate startDate, Pageable pageable);
+
     @Query("SELECT new com.team7.carbontrack.dto.CategoryEmission(al.category, SUM(al.co2eKg) / COUNT(DISTINCT al.userId)) " +
            "FROM ActivityLog al WHERE al.logDate >= :startDate GROUP BY al.category")
     List<CategoryEmission> getPlatformCategoryAverages(LocalDate startDate);

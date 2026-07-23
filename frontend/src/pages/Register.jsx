@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { FcGoogle } from 'react-icons/fc';
 export default function Register() {
   const { register: signup } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,7 +17,8 @@ export default function Register() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await signup(data);
+      const referrerId = Number(searchParams.get('ref'));
+      await signup({ ...data, ...(Number.isSafeInteger(referrerId) && referrerId > 0 ? { referrerId } : {}) });
       toast.success('Account created successfully!', { toastId: 'register-success' });
       navigate('/dashboard');
     } catch (err) {

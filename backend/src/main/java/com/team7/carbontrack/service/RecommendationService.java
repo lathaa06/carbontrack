@@ -1,6 +1,7 @@
 package com.team7.carbontrack.service;
 
 import com.team7.carbontrack.repository.ActivityLogRepository;
+import com.team7.carbontrack.dto.RecommendationInsight;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 public class RecommendationService {
@@ -74,5 +77,70 @@ public class RecommendationService {
         }
 
         return tips;
+    }
+
+    /**
+     * Produces an explainable recommendation feed from the user's own last-30-day data.
+     * The saving is deliberately conservative: one practical change per week (15% of
+     * the observed impact), projected to a month.
+     */
+    @Transactional(readOnly = true)
+    public List<RecommendationInsight> getRecommendationInsights(Long userId) {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        List<Object[]> activities = activityLogRepository.findTopActivityImpacts(
+                userId, thirtyDaysAgo, PageRequest.of(0, 3)
+        );
+
+        List<RecommendationInsight> insights = new ArrayList<>();
+        for (Object[] row : activities) {
+            String activityType = String.valueOf(row[0]);
+            BigDecimal impact = ((Number) row[1]).doubleValue() == 0
+                    ? BigDecimal.ZERO
+                    : BigDecimal.valueOf(((Number) row[1]).doubleValue()).setScale(1, RoundingMode.HALF_UP);
+            String tip = TIP_MAP.getOrDefault(activityType,
+                    "Choose one lower-impact alternative for this activity each week.");
+            BigDecimal saving = impact.multiply(BigDecimal.valueOf(0.15)).setScale(1, RoundingMode.HALF_UP);
+            insights.add(new RecommendationInsight(
+                    activityType,
+                    friendlyName(activityType),
+                    shortAction(activityType),
+                    tip,
+                    impact,
+                    saving
+            ));
+        }
+
+        if (insights.isEmpty()) {
+            insights.add(new RecommendationInsight(
+                    "GET_STARTED", "Build your first footprint", "Log one activity today",
+                    "Your recommendations become more precise after you log everyday transport, food, energy, or shopping choices.",
+                    BigDecimal.ZERO, BigDecimal.ZERO
+            ));
+        }
+        return insights;
+    }
+
+    private String friendlyName(String activityType) {
+        String[] words = activityType.toLowerCase().split("_");
+        StringBuilder label = new StringBuilder();
+        for (String word : words) {
+            if (!label.isEmpty()) {
+                label.append(' ');
+            }
+            label.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+        }
+        return label.toString();
+    }
+
+    private String shortAction(String activityType) {
+        return switch (activityType) {
+            case "CAR_PETROL", "CAR_DIESEL" -> "Replace one commute this week";
+            case "FLIGHT_SHORT_HAUL", "FLIGHT_LONG_HAUL" -> "Choose rail or combine trips";
+            case "GRID_ELECTRICITY" -> "Cut standby power this week";
+            case "BEEF_MEAL" -> "Swap one meal for plant-based";
+            case "CLOTHING" -> "Try pre-loved before new";
+            case "ELECTRONICS" -> "Repair before replacing";
+            default -> "Make one lighter choice this week";
+        };
     }
 }

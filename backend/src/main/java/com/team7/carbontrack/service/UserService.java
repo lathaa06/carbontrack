@@ -8,6 +8,7 @@ import com.team7.carbontrack.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 @Service
@@ -15,10 +16,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BadgeService badgeService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BadgeService badgeService) {
+    public UserService(UserRepository userRepository, BadgeService badgeService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.badgeService = badgeService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -71,6 +74,14 @@ public class UserService {
                 .map(com.team7.carbontrack.entity.Badge::getName)
                 .collect(java.util.stream.Collectors.toList());
         return UserProfileResponse.from(saved, badgeNames);
+    }
+
+    /** Lets a verified Google user add a password for normal username/email sign-in on any device. */
+    @Transactional
+    public void setPassword(Long userId, String rawPassword) {
+        User user = findUserOrThrow(userId);
+        user.setPasswordHash(passwordEncoder.encode(rawPassword));
+        userRepository.save(user);
     }
 
     private User findUserOrThrow(Long userId) {

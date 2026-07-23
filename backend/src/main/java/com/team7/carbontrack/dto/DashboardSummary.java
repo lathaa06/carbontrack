@@ -18,6 +18,7 @@ public record DashboardSummary(
         List<DailyEmission> lastWeekTrend,
         List<ActivityLogResponse> recentActivities,
         List<String> recommendations,
+        List<RecommendationInsight> recommendationInsights,
         Double percentileRank,
         Map<String, BigDecimal> categoryAverages,
         ActiveGoalProgress activeGoal

@@ -65,6 +65,9 @@ export const profileService = {
     const res = await api.patch('/users/me', data);
     return res.data;
   },
+  setPassword: async (password) => {
+    await api.put('/users/me/password', { password });
+  },
 };
 
 export const leaderboardService = {

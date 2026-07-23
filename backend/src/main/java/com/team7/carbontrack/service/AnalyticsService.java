@@ -4,6 +4,7 @@ import com.team7.carbontrack.dto.CategoryEmission;
 import com.team7.carbontrack.dto.DailyEmission;
 import com.team7.carbontrack.dto.DashboardSummary;
 import com.team7.carbontrack.dto.ActivityLogResponse;
+import com.team7.carbontrack.dto.RecommendationInsight;
 import com.team7.carbontrack.entity.ActivityCategory;
 import com.team7.carbontrack.repository.ActivityLogRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,6 +35,7 @@ public class AnalyticsService {
                             UserStreakRepository userStreakRepository) {
         this.activityLogRepository = activityLogRepository;
         this.recommendationService = recommendationService;
+
         this.goalService = goalService;
         this.userStreakRepository = userStreakRepository;
     }
@@ -100,6 +102,7 @@ public class AnalyticsService {
 
         // 5. Recommendations
         List<String> recommendations = recommendationService.getPersonalizedRecommendations(userId);
+        List<RecommendationInsight> recommendationInsights = recommendationService.getRecommendationInsights(userId);
         //List<String> recommendations = List.of();
 
 
@@ -159,6 +162,7 @@ public class AnalyticsService {
                 lastWeekTrend,
                 recentActivities,
                 recommendations,
+                recommendationInsights,
                 percentileRank,
                 categoryAverages,
                 activeGoal

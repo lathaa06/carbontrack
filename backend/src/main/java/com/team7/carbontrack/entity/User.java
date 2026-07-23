@@ -40,6 +40,10 @@ public class User {
     @Column(name = "org_id")
     private Long orgId;
 
+    /** The CarbonTrack member whose invite link was used at registration. */
+    @Column(name = "referred_by_user_id")
+    private Long referredByUserId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider", nullable = false, length = 20)
     @Builder.Default

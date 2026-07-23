@@ -1,17 +1,24 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 import { FiMail, FiLock, FiLoader, FiEye, FiEyeOff } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  useEffect(() => {
+    if (searchParams.get('oauthError')) {
+      toast.error('Google sign-in could not be completed. Please try again or check the Google OAuth configuration.');
+    }
+  }, [searchParams]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -39,7 +46,7 @@ export default function Login() {
 
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-outfit gradient-text">Welcome Back</h1>
-          <p className="text-xs text-[var(--color-text-secondary)] mt-1.5">Enter credentials to access your dashboard</p>
+          <p className="text-xs text-[var(--color-text-secondary)] mt-1.5">Use your password, or continue with Google for a Google-created account</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

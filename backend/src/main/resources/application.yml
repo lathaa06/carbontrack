@@ -42,9 +42,12 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID:dummy-id}
             client-secret: ${GOOGLE_CLIENT_SECRET:dummy-secret}
-            redirect-uri: "http://localhost:5173/login/oauth2/code/google"
+            redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:5173/login/oauth2/code/google}
 
 app:
+  oauth2:
+    authorized-redirect-uri: ${OAUTH2_AUTHORIZED_REDIRECT_URI:http://localhost:5173/oauth2/redirect}
+    login-failure-redirect-uri: ${OAUTH2_LOGIN_FAILURE_REDIRECT_URI:http://localhost:5173/login?oauthError=true}
   jwt:
     # Base64-encoded HMAC-SHA256 secret. Override via env var in every real deployment.
     secret: ${JWT_SECRET:ZmFrZS1kZXYtc2VjcmV0LWNoYW5nZS1tZS1pbi1wcm9kLTEyMzQ1Njc4OTA=}

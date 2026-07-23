@@ -2,6 +2,7 @@ package com.team7.carbontrack.config;
 
 import com.team7.carbontrack.security.JwtAuthenticationFilter;
 import com.team7.carbontrack.security.OAuth2LoginSuccessHandler;
+import com.team7.carbontrack.security.OAuth2LoginFailureHandler;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,15 +56,18 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final ObjectProvider<ClientRegistrationRepository> clientRegistrationRepositoryProvider;
     private final ObjectProvider<OAuth2LoginSuccessHandler> oAuth2LoginSuccessHandlerProvider;
+    private final ObjectProvider<OAuth2LoginFailureHandler> oAuth2LoginFailureHandlerProvider;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
                           UserDetailsService userDetailsService,
                           ObjectProvider<ClientRegistrationRepository> clientRegistrationRepositoryProvider,
-                          ObjectProvider<OAuth2LoginSuccessHandler> oAuth2LoginSuccessHandlerProvider) {
+                          ObjectProvider<OAuth2LoginSuccessHandler> oAuth2LoginSuccessHandlerProvider,
+                          ObjectProvider<OAuth2LoginFailureHandler> oAuth2LoginFailureHandlerProvider) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
         this.clientRegistrationRepositoryProvider = clientRegistrationRepositoryProvider;
         this.oAuth2LoginSuccessHandlerProvider = oAuth2LoginSuccessHandlerProvider;
+        this.oAuth2LoginFailureHandlerProvider = oAuth2LoginFailureHandlerProvider;
     }
 
     @Bean
@@ -91,7 +95,8 @@ public class SecurityConfig {
 
         if (isGoogleConfigured) {
             OAuth2LoginSuccessHandler successHandler = oAuth2LoginSuccessHandlerProvider.getObject();
-            http.oauth2Login(oauth2 -> oauth2.successHandler(successHandler));
+            OAuth2LoginFailureHandler failureHandler = oAuth2LoginFailureHandlerProvider.getObject();
+            http.oauth2Login(oauth2 -> oauth2.successHandler(successHandler).failureHandler(failureHandler));
         }
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

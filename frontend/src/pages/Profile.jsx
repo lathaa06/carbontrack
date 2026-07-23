@@ -3,17 +3,18 @@ import { useForm } from 'react-hook-form';
 import { profileService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
-import { FiUser, FiEye, FiLoader, FiCamera, FiUpload, FiTrash2, FiAward } from 'react-icons/fi';
+import { FiUser, FiEye, FiLoader, FiCamera, FiTrash2, FiAward, FiCompass, FiTarget, FiWind, FiSun, FiGlobe, FiMapPin, FiZap, FiShield, FiCopy, FiCheck } from 'react-icons/fi';
+import EcoPulse from '../components/EcoPulse';
 
 const ALL_BADGES = [
-  { name: 'First Log', icon: '🚀🌱', desc: 'Log your very first carbon activity on the platform' },
-  { name: 'First Step', icon: '👣✨', desc: 'Successfully achieve your first carbon reduction goal' },
-  { name: 'Carbon Saver 10', icon: '🌱🔋', desc: 'Reduce cumulative footprint by 10 kg CO₂e' },
-  { name: 'Carbon Saver 25', icon: '🌲🌳', desc: 'Reduce cumulative footprint by 25 kg CO₂e' },
-  { name: 'Carbon Saver 50', icon: '🌎🛡️', desc: 'Reduce cumulative footprint by 50 kg CO₂e' },
-  { name: 'Green Commuter', icon: '🚗🌱', desc: 'Log transit activities for 7 days in a row' },
-  { name: 'Eco Warrior', icon: '🚴🌲', desc: 'Log transit activities for 15 days in a row' },
-  { name: 'Planet Protector', icon: '👑🌍', desc: 'Log transit activities for 30 days in a row' },
+  { name: 'First Log', icon: FiCompass, desc: 'Log your very first carbon activity on the platform' },
+  { name: 'First Step', icon: FiTarget, desc: 'Successfully achieve your first carbon reduction goal' },
+  { name: 'Carbon Saver 10', icon: FiWind, desc: 'Reduce cumulative footprint by 10 kg CO₂e' },
+  { name: 'Carbon Saver 25', icon: FiSun, desc: 'Reduce cumulative footprint by 25 kg CO₂e' },
+  { name: 'Carbon Saver 50', icon: FiGlobe, desc: 'Reduce cumulative footprint by 50 kg CO₂e' },
+  { name: 'Green Commuter', icon: FiMapPin, desc: 'Log transit activities for 7 days in a row' },
+  { name: 'Eco Warrior', icon: FiZap, desc: 'Log transit activities for 15 days in a row' },
+  { name: 'Planet Protector', icon: FiShield, desc: 'Log transit activities for 30 days in a row' },
 ];
 
 export default function Profile() {
@@ -23,8 +24,9 @@ export default function Profile() {
   const [cameraActive, setCameraActive] = useState(false);
   const [stream, setStream] = useState(null);
   const [earnedBadges, setEarnedBadges] = useState([]);
+  const [copiedInvite, setCopiedInvite] = useState(false);
   
-  const { updateUser } = useAuth();
+  const { updateUser, user } = useAuth();
   const { register, handleSubmit, reset, watch } = useForm();
   
   const videoRef = useRef(null);
@@ -110,6 +112,18 @@ export default function Profile() {
     setProfilePhoto(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  const copyInviteLink = async () => {
+    const inviteLink = `${window.location.origin}/register?ref=${user.id}`;
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setCopiedInvite(true);
+      toast.success('Invite link copied. Your friend can now join CarbonTrack.');
+      window.setTimeout(() => setCopiedInvite(false), 2500);
+    } catch {
+      toast.error('Could not copy the link. Please copy it from your browser address bar.');
     }
   };
 
@@ -200,7 +214,7 @@ export default function Profile() {
                 <span className="text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-full bg-[var(--color-accent-dim)] text-[var(--color-accent)] tracking-wider">
                   Level {levelInfo.levelNum}
                 </span>
-                <span className="text-2xl">🌱</span>
+                <FiAward className="text-2xl text-[var(--color-accent)]" aria-label="Sustainability level" />
               </div>
               <h4 className="text-base font-bold font-outfit text-[var(--color-text-primary)]">{levelInfo.title}</h4>
               <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-normal">{levelInfo.nextMilestone}</p>
@@ -348,6 +362,19 @@ export default function Profile() {
 
         {/* Right Column: Badges Grid */}
         <div className="md:col-span-2">
+          <div className="glass-card p-5 mb-6 overflow-hidden relative flex flex-col sm:flex-row items-center gap-4 shadow-[0_10px_30px_-10px_rgba(16,185,129,0.10)]">
+            <EcoPulse className="h-24 w-24 shrink-0" />
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-xs font-extrabold uppercase tracking-wider text-[var(--color-accent)]">Grow the community</p>
+              <h4 className="font-outfit text-lg font-bold text-[var(--color-text-primary)] mt-1">Invite a friend to track their footprint</h4>
+              <p className="text-xs text-[var(--color-text-muted)] mt-1">Share your personal link. Their new account will be connected to your invitation.</p>
+            </div>
+            <button type="button" onClick={copyInviteLink} className="btn-primary shrink-0 flex items-center gap-2 text-xs">
+              {copiedInvite ? <FiCheck /> : <FiCopy />}
+              {copiedInvite ? 'Copied' : 'Copy invite link'}
+            </button>
+          </div>
+
           <div className="glass-card p-6 h-full shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)]">
             <h4 className="text-sm font-bold tracking-wide uppercase text-[var(--color-text-secondary)] mb-6 flex items-center gap-1.5">
               <FiAward className="text-[var(--color-accent)] text-lg" />
@@ -357,6 +384,7 @@ export default function Profile() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {ALL_BADGES.map((item) => {
                 const isEarned = earnedBadges.includes(item.name);
+                const BadgeIcon = item.icon;
                 return (
                   <div 
                     key={item.name} 
@@ -367,7 +395,7 @@ export default function Profile() {
                     }`}
                   >
                     <div className="flex flex-col items-center">
-                      <span className="text-3xl mb-2.5 filter drop-shadow-sm">{item.icon}</span>
+                      <BadgeIcon className="text-3xl mb-2.5 text-[var(--color-accent)] drop-shadow-sm" aria-hidden="true" />
                       <h5 className="font-bold text-xs text-[var(--color-text-primary)]">{item.name}</h5>
                       <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-relaxed">{item.desc}</p>
                     </div>

@@ -1,6 +1,7 @@
 package com.team7.carbontrack.controller;
 
 import com.team7.carbontrack.dto.UpdateProfileRequest;
+import com.team7.carbontrack.dto.SetPasswordRequest;
 import com.team7.carbontrack.dto.UserProfileResponse;
 import com.team7.carbontrack.security.UserPrincipal;
 import com.team7.carbontrack.service.UserService;
@@ -28,5 +29,12 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> updateMyProfile(@AuthenticationPrincipal UserPrincipal principal,
                                                                  @Valid @RequestBody UpdateProfileRequest request) {
         return ResponseEntity.ok(userService.updateProfile(principal.getId(), request));
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> setMyPassword(@AuthenticationPrincipal UserPrincipal principal,
+                                               @Valid @RequestBody SetPasswordRequest request) {
+        userService.setPassword(principal.getId(), request.password());
+        return ResponseEntity.noContent().build();
     }
 }
