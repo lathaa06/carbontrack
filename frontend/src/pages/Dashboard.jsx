@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { dashboardService, activityService } from '../services/api';
 import { toast } from 'react-toastify';
+
+
+
 import { 
   ResponsiveContainer, 
   PieChart, 
@@ -55,6 +58,7 @@ export default function Dashboard() {
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [completedTips, setCompletedTips] = useState([]);
 
+
   const fetchDashboard = async () => {
     try {
       const summary = await dashboardService.getDashboard();
@@ -66,8 +70,11 @@ export default function Dashboard() {
     }
   };
 
+
+
   useEffect(() => {
-    fetchDashboard();
+      fetchDashboard();
+
   }, []);
 
   const handleDeleteActivity = (id) => {
@@ -176,7 +183,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 fade-in">
+
+      <div className="space-y-8 fade-in">
+
       <section className="dashboard-hero overflow-hidden p-6 md:p-8">
         <video
           className="dashboard-hero-video"
@@ -550,6 +559,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-    </div>
+     </div>
+
   );
 }

@@ -41,6 +41,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(() => {
+    sessionStorage.removeItem("introPlayed");
+
     authService.logout();
     setUser(null);
   }, []);

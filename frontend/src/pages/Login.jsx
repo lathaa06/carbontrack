@@ -5,12 +5,15 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { FiMail, FiLock, FiLoader, FiEye, FiEyeOff } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
+import IntroAnimation from "../components/IntroAnimation";
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -24,8 +27,18 @@ export default function Login() {
     setLoading(true);
     try {
       await login(data);
-      toast.success('Logged in successfully!', { toastId: 'login-success' });
-      navigate('/dashboard');
+
+        toast.success("Logged in successfully!", {
+          toastId: "login-success",
+        });
+
+        // Show Intro Animation
+        setShowIntro(true);
+
+        // Wait 3 seconds before opening dashboard
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
     } catch (err) {
       if (!err.response) {
         toast.error('Server is starting up or unreachable. Please try again in a few seconds.');
@@ -36,6 +49,14 @@ export default function Login() {
       setLoading(false);
     }
   };
+  if (showIntro) {
+        return (
+                <div className="min-h-screen flex items-center justify-center text-4xl text-white">
+                    INTRO WORKING
+                </div>
+            );
+    }
+
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-primary)] flex items-center justify-center p-4">

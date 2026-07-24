@@ -1,11 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import MotionBackdrop from '../components/MotionBackdrop';
+import IntroAnimation from '../components/IntroAnimation';
 
 export default function DashboardLayout({ title }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    return sessionStorage.getItem("introPlayed") !== "true";
+  });
+
+  useEffect(() => {
+    if (!showIntro) return;
+
+    const timer = setTimeout(() => {
+      sessionStorage.setItem("introPlayed", "true");
+      setShowIntro(false);
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [showIntro]);
+  if (showIntro) {
+    return (
+      <IntroAnimation
+        show={true}
+        onComplete={() => {}}
+      />
+    );
+  }
 
   return (
     <div className="app-shell min-h-screen text-[var(--color-text-primary)]">

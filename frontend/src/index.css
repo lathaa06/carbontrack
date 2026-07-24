@@ -534,3 +534,47 @@
     }
   }
 }
+/* ---------- Metallic Shine ---------- */
+
+.badge-shine {
+
+    position: absolute;
+
+    top: -20%;
+
+    left: -150%;
+
+    width: 40%;
+
+    height: 160%;
+
+    background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255,255,255,.55),
+        transparent
+    );
+
+    transform: rotate(20deg);
+
+    animation: badgeShine 4.5s infinite;
+
+    pointer-events: none;
+
+}
+
+@keyframes badgeShine {
+
+    0%{
+        left:-150%;
+    }
+
+    35%{
+        left:150%;
+    }
+
+    100%{
+        left:150%;
+    }
+
+}

@@ -1,0 +1,58 @@
+export const badges = [
+  {
+    id: 1,
+    title: "First Log",
+    description: "Log your first carbon activity.",
+    image: "/badges/First_log.webp",
+    unlocked: true,
+  },
+  {
+    id: 2,
+    title: "Goal Achiever",
+    description: "Complete your first carbon reduction goal.",
+    image: "/badges/Goal.webp",
+    unlocked: false,
+  },
+  {
+    id: 3,
+    title: "10 kg Saved",
+    description: "Reduce your footprint by 10 kg CO₂.",
+    image: "/badges/Co2-10kg.webp",
+    unlocked: false,
+  },
+  {
+    id: 4,
+    title: "25 kg Saved",
+    description: "Reduce your footprint by 25 kg CO₂.",
+    image: "/badges/Co2-25kg.webp",
+    unlocked: false,
+  },
+  {
+    id: 5,
+    title: "50 kg Saved",
+    description: "Reduce your footprint by 50 kg CO₂.",
+    image: "/badges/Co2-50kg.webp",
+    unlocked: false,
+  },
+  {
+    id: 6,
+    title: "7 Day Streak",
+    description: "Use sustainable transport for 7 consecutive days.",
+    image: "/badges/7day_streak.webp",
+    unlocked: false,
+  },
+  {
+    id: 7,
+    title: "15 Day Streak",
+    description: "Maintain a 15-day sustainability streak.",
+    image: "/badges/15day_streak.webp",
+    unlocked: false,
+  },
+  {
+    id: 8,
+    title: "30 Day Streak",
+    description: "Become a Carbon Hero with a 30-day streak.",
+    image: "/badges/30day_streak.webp",
+    unlocked: false,
+  },
+];

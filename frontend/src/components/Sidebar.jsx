@@ -14,6 +14,9 @@ import {
   FiShield 
 } from 'react-icons/fi';
 
+
+import { RiMedalLine } from "react-icons/ri";
+
 export default function Sidebar({ isOpen }) {
   const { user, logout, isOrgAdmin } = useAuth();
   const navigate = useNavigate();
@@ -85,7 +88,19 @@ export default function Sidebar({ isOpen }) {
             <FiAward className="text-lg" />
             Leaderboard
           </NavLink>
-          
+          <NavLink
+            to="/badges"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition duration-200 decoration-none cursor-pointer ${
+                isActive
+                  ? 'bg-[var(--color-bg-card)] text-[var(--color-accent)] border border-[var(--color-border)]'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-card-hover)] hover:text-[var(--color-text-primary)]'
+              }`
+            }
+          >
+            <RiMedalLine className="text-lg" />
+            Badges
+          </NavLink>
           {isOrgAdmin && (
             <NavLink 
               to="/organisation" 

@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import LogActivity from './pages/LogActivity';
 import Goals from './pages/Goals';
 import Leaderboard from './pages/Leaderboard';
+import Badges from "./pages/Badges";
 import Organisation from './pages/Organisation';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
@@ -44,6 +45,9 @@ export default function App() {
             </Route>
             <Route element={<DashboardLayout title="Community Rankings" />}>
               <Route path="/leaderboard" element={<Leaderboard />} />
+            </Route>
+            <Route element={<DashboardLayout title="Sustainability Badges" />}>
+                <Route path="/badges" element={<Badges />} />
             </Route>
             <Route element={<DashboardLayout title="User Preferences" />}>
               <Route path="/profile" element={<Profile />} />
